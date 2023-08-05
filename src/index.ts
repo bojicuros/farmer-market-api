@@ -1,6 +1,7 @@
 import * as dotenv from "dotenv";
-import express from "express";
 import cors from "cors";
+import express, { Response } from "express";
+import userRouter from "./routers/user.router";
 
 dotenv.config();
 
@@ -14,6 +15,15 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+app.use("/api/users", userRouter);
+
+app.get("/api/healthchecker", (_, res: Response) => {
+  res.status(200).json({
+    status: "success",
+    message: "Welcome to NodeJs with Prisma and PostgreSQL",
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);

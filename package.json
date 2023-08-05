@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon --require esbuild-register src/index.ts"
   },
   "prisma": {
     "seed": "node --require esbuild-register ./prisma/data/seed.ts"

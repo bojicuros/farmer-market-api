@@ -42,7 +42,7 @@ model UserRole {
 model Market {
   id         String       @id @default(uuid())
   name       String
-  location   String? // Add more fields as needed for market information
+  location   String?
   prices     Price[]
   UserMarket UserMarket[]
 }
@@ -61,7 +61,7 @@ model UserMarket {
 model Product {
   id          String  @id @default(uuid())
   name        String
-  description String? // Add more fields as needed for product information
+  description String?
   prices      Price[]
 }
 
@@ -71,11 +71,11 @@ model Price {
   product_id  String
   price_date  DateTime @db.Date
   price_value Float
-  user_id     String // New field to store the user_id of the User who set the price
+  user_id     String
 
   market  Market  @relation(fields: [market_id], references: [id], onDelete: Cascade)
   product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
-  user    User    @relation(fields: [user_id], references: [id], onDelete: Cascade) // Relationship to connect Price with User
+  user    User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([market_id, product_id, price_date])
 }

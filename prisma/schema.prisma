@@ -11,15 +11,18 @@ datasource db {
 }
 
 model User {
-  id           String       @id @default(uuid())
-  email        String       @unique
+  id           String   @id @default(uuid())
+  email        String   @unique
   password     String
   first_name   String
   last_name    String
   phone_number String?
-  UserRole     UserRole[]
-  Price        Price[]
-  UserMarket   UserMarket[]
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  UserRole   UserRole[]
+  Price      Price[]
+  UserMarket UserMarket[]
 }
 
 model Role {
@@ -40,9 +43,12 @@ model UserRole {
 }
 
 model Market {
-  id         String       @id @default(uuid())
+  id         String   @id @default(uuid())
   name       String
   location   String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
   prices     Price[]
   UserMarket UserMarket[]
 }
@@ -59,10 +65,13 @@ model UserMarket {
 }
 
 model Product {
-  id          String  @id @default(uuid())
+  id          String   @id @default(uuid())
   name        String
   description String?
-  prices      Price[]
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  prices Price[]
 }
 
 model Price {

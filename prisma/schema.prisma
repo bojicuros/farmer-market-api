@@ -9,3 +9,73 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id           String       @id @default(uuid())
+  email        String       @unique
+  password     String
+  first_name   String
+  last_name    String
+  phone_number String?
+  UserRole     UserRole[]
+  Price        Price[]
+  UserMarket   UserMarket[]
+}
+
+model Role {
+  id       String     @id @default(uuid())
+  name     String     @unique
+  UserRole UserRole[]
+}
+
+model UserRole {
+  role_id String
+  user_id String
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [role_id], references: [id], onDelete: Cascade)
+
+  @@id([role_id, user_id])
+  @@unique([role_id, user_id])
+}
+
+model Market {
+  id         String       @id @default(uuid())
+  name       String
+  location   String? // Add more fields as needed for market information
+  prices     Price[]
+  UserMarket UserMarket[]
+}
+
+model UserMarket {
+  user_id   String
+  market_id String
+
+  user   User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  market Market @relation(fields: [market_id], references: [id], onDelete: Cascade)
+
+  @@id([user_id, market_id])
+  @@unique([user_id, market_id])
+}
+
+model Product {
+  id          String  @id @default(uuid())
+  name        String
+  description String? // Add more fields as needed for product information
+  prices      Price[]
+}
+
+model Price {
+  id          String   @id @default(uuid())
+  market_id   String
+  product_id  String
+  price_date  DateTime @db.Date
+  price_value Float
+  user_id     String // New field to store the user_id of the User who set the price
+
+  market  Market  @relation(fields: [market_id], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [user_id], references: [id], onDelete: Cascade) // Relationship to connect Price with User
+
+  @@index([market_id, product_id, price_date])
+}

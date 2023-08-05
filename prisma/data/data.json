@@ -1,0 +1,86 @@
+{
+  "roles": [
+    { "id": "664211ac-c22a-435f-a986-6594bf22d08c", "name": "Admin" },
+    { "id": "5fb10e5a-d14c-4579-afb5-904cf283a463", "name": "Vendor" }
+  ],
+  "users": [
+    {
+      "id": "5a936029-4db9-409a-9794-4b42832a1be9",
+      "email": "user1@example.com",
+      "password": "password1",
+      "first_name": "John",
+      "last_name": "Doe",
+      "phone_number": "1234567890"
+    },
+    {
+      "id": "ff89d5af-53ad-446b-ae7c-eb965571cf39",
+      "email": "user2@example.com",
+      "password": "password2",
+      "first_name": "Jane",
+      "last_name": "Smith",
+      "phone_number": "9876543210"
+    }
+  ],
+  "userRoles": [
+    {
+      "role_id": "664211ac-c22a-435f-a986-6594bf22d08c",
+      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
+    },
+    {
+      "role_id": "5fb10e5a-d14c-4579-afb5-904cf283a463",
+      "user_id": "ff89d5af-53ad-446b-ae7c-eb965571cf39"
+    }
+  ],
+  "markets": [
+    {
+      "id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
+      "name": "Farmers Market",
+      "location": "Some Location"
+    },
+    {
+      "id": "0c93ffe5-cc20-4e97-bec4-fc99e20fb62b",
+      "name": "Organic Market",
+      "location": "Another Location"
+    }
+  ],
+  "userMarket": [
+    {
+      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9",
+      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d"
+    },
+    {
+      "user_id": "ff89d5af-53ad-446b-ae7c-eb965571cf39",
+      "market_id": "0c93ffe5-cc20-4e97-bec4-fc99e20fb62b"
+    }
+  ],
+  "products": [
+    {
+      "id": "8077fdaf-028d-4379-b5ed-22bf500269a9",
+      "name": "Apples",
+      "description": "Fresh apples"
+    },
+    {
+      "id": "8e866d8d-bf8a-456a-a08c-d2f571effbe6",
+      "name": "Tomatoes",
+      "description": "Ripe tomatoes"
+    }
+  ],
+  "prices": [
+    {
+      "id": "ee73c8fc-f0b3-4dd0-8614-7e63b85e8ff3",
+      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
+      "product_id": "8077fdaf-028d-4379-b5ed-22bf500269a9",
+      "price_date": "2023-08-05T12:00:00.000Z",
+      "price_value": 2.5,
+      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
+    },
+    {
+      "id": "b5ce71ca-43b7-4316-a698-958cb588de63",
+      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
+      "product_id": "8e866d8d-bf8a-456a-a08c-d2f571effbe6",
+      "price_date": "2023-08-05T12:00:00.000Z",
+      "price_value": 3.0,
+      "user_id": "ff89d5af-53ad-446b-ae7c-eb965571cf39"
+    }
+  ]
+}

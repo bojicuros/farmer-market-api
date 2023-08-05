@@ -1,6 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../../src/utils/db.server";
 import seedData from "./data.json";
-const prisma = new PrismaClient();
 
 async function seed() {
   try {

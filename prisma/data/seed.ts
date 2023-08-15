@@ -1,5 +1,16 @@
+import bcrypt from "bcrypt";
 import { prisma } from "../../src/utils/db.server";
 import seedData from "./data.json";
+
+async function hashPasswords(users) {
+  const hashedUsers = await Promise.all(
+    users.map(async (user) => {
+      const hashedPassword = await bcrypt.hash(user.password, 10);
+      return { ...user, password: hashedPassword };
+    })
+  );
+  return hashedUsers;
+}
 
 async function seed() {
   try {
@@ -12,7 +23,10 @@ async function seed() {
     await prisma.product.deleteMany();
 
     await prisma.role.createMany({ data: seedData.roles });
-    await prisma.user.createMany({ data: seedData.users });
+
+    const hashedUsers = await hashPasswords(seedData.users); // Hash passwords
+
+    await prisma.user.createMany({ data: hashedUsers }); // Insert hashed users
     await prisma.userRole.createMany({ data: seedData.userRoles });
     await prisma.market.createMany({ data: seedData.markets });
     await prisma.userMarket.createMany({ data: seedData.userMarket });

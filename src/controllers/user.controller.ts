@@ -7,6 +7,11 @@ import {
   deleteById,
 } from "../services/user.service";
 import { User } from "@prisma/client";
+import {
+  UserCreateDto,
+  UserIdDto,
+  UserUpdateDto,
+} from "../validation/user.schema";
 
 export async function getAllUsers(_, res: Response) {
   try {
@@ -18,7 +23,7 @@ export async function getAllUsers(_, res: Response) {
 }
 
 export async function getUserById(req: Request, res: Response) {
-  const userId = req.query.id as string;
+  const userId = (req.query.id as UserIdDto).id;
   try {
     const user = await getById(userId);
     if (user) {
@@ -34,7 +39,7 @@ export async function getUserById(req: Request, res: Response) {
 export async function createUser(req: Request, res: Response) {
   const user: User = req.body;
   try {
-    const createdUser: User = await create(user);
+    const createdUser = await create(user);
     res.status(201).json(createdUser);
   } catch (error) {
     res.status(500).json({ error: "Error creating user" });
@@ -42,7 +47,7 @@ export async function createUser(req: Request, res: Response) {
 }
 
 export async function updateUser(req: Request, res: Response) {
-  const user: User = req.body;
+  const user = req.body as UserUpdateDto;
   try {
     const updatedUser: User = await updateById(user);
     res.status(200).json(updatedUser);
@@ -52,7 +57,7 @@ export async function updateUser(req: Request, res: Response) {
 }
 
 export async function deleteUser(req: Request, res: Response) {
-  const userId = req.query.id as string;
+  const userId = (req.query.id as UserIdDto).id;
   try {
     await deleteById(userId);
     res.status(204).send();

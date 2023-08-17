@@ -3,6 +3,7 @@ import cors from "cors";
 import express, { Response } from "express";
 import userRouter from "./routers/user.router";
 import marketRouter from "./routers/market.router";
+import authRouter from "./routers/auth.router";
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(express.json());
 
 app.use("/api/users", userRouter);
 app.use("/api/markets", marketRouter);
+app.use("/api/auth", authRouter);
 
 app.get("/api/healthchecker", (_, res: Response) => {
   res.status(200).json({

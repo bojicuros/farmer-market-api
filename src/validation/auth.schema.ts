@@ -17,5 +17,12 @@ export const registerSchema = object({
   }),
 });
 
+export const refreshTokenSchema = object({
+  body: object({
+    refreshToken: string().required(),
+  }),
+});
+
 export type LoginInfoDto = InferType<typeof loginSchema>["body"];
 export type RegisterInfoDto = InferType<typeof registerSchema>["body"];
+export type RefreshTokenDto = InferType<typeof refreshTokenSchema>["body"];

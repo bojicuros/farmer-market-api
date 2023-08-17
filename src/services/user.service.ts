@@ -22,7 +22,7 @@ export async function create(user: User) {
   });
 }
 
-export async function updateById(user: User) {
+export async function updateById(user) {
   const existingUser = await getById(user.id);
 
   if (!existingUser) {

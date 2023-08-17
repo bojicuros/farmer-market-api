@@ -1,9 +1,19 @@
 import { Request, Response } from "express";
-import { getUser, createUser } from "../services/auth.service";
+import {
+  getUser,
+  createUser,
+  getUserByRefreshToken,
+  createUserSession,
+} from "../services/auth.service";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
-import { LoginInfoDto, RegisterInfoDto } from "../validation/auth.schema";
+import {
+  LoginInfoDto,
+  RefreshTokenDto,
+  RegisterInfoDto,
+} from "../validation/auth.schema";
+import { randomBytes } from "crypto";
 
 dotenv.config();
 
@@ -18,7 +28,7 @@ export async function login(req: Request, res: Response) {
       if (passwordsMatch) {
         const roles = user.UserRole.map((userRole) => userRole.role.name);
 
-        const token = jwt.sign(
+        const accessToken = jwt.sign(
           {
             userId: user.id,
             email: user.email,
@@ -30,7 +40,13 @@ export async function login(req: Request, res: Response) {
           }
         );
 
-        res.status(200).json({ accessToken: token });
+        const refreshToken = randomBytes(64).toString("base64");
+
+        await createUserSession(user, refreshToken);
+
+        res
+          .status(200)
+          .json({ accessToken: accessToken, refreshToken: refreshToken });
       } else {
         res.status(401).json({ error: "Passwords do not match" });
       }
@@ -66,5 +82,32 @@ export async function register(req: Request, res: Response) {
     res.status(201).json(newUser);
   } catch (error) {
     res.status(500).json({ error: "Error registering user" });
+  }
+}
+
+export async function refreshAccessToken(req: Request, res: Response) {
+  const { refreshToken } = req.body as RefreshTokenDto;
+  try {
+    const user = await getUserByRefreshToken(refreshToken);
+
+    if (user) {
+      const accessToken = jwt.sign(
+        {
+          userId: user.id,
+          email: user.email,
+          roles: user.UserRole.map((userRole) => userRole.role.name),
+        },
+        process.env.TOKEN_KEY,
+        {
+          expiresIn: "1h",
+        }
+      );
+
+      res.status(200).json({ accessToken });
+    } else {
+      res.status(401).json({ error: "Invalid refresh token" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error refreshing token" });
   }
 }

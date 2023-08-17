@@ -1,14 +1,34 @@
-import { Request, Response, NextFunction } from "express";
-import * as yup from "yup";
+import { Request, Response, NextFunction, RequestHandler } from "express";
+import { ObjectSchema, ValidationError } from "yup";
 
-export const validate = (schema: yup.ObjectSchema<any>) => {
+export const validate = (schema: ObjectSchema<any>): RequestHandler => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data = req.method === "GET" ? req.query : req.body;
-      await schema.validate(data, { abortEarly: false });
-      next();
-    } catch (error) {
-      return res.status(400).json({ errors: error.errors });
+      const data = schema.cast(
+        {
+          body: req.body,
+          query: req.query,
+          params: req.params,
+        },
+        { stripUnknown: true }
+      );
+
+      schema.validateSync(data);
+
+      req.body = data.body;
+      req.query = data.query;
+
+      schema.validateSync(data, { abortEarly: false });
+      return next();
+    } catch (err) {
+      const error = err as ValidationError;
+      return res.status(400).json({
+        name: error.name,
+        message: error.message,
+        errors: error.errors,
+        value: error.value,
+        path: error.path,
+      });
     }
   };
 };

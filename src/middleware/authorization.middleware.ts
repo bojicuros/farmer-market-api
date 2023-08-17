@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
 
-const validRoles = ["ADMIN", "VENDOR"];
+const validRoles = ["Admin", "Vendor"];
 
 export const authorize = (roles: string[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -10,14 +11,27 @@ export const authorize = (roles: string[]) => {
       return res.status(400).json({ message: "Invalid roles provided" });
     }
 
-    // You can implement your own logic to check if the user has the required role
-    // For example, you can get the user role from the authenticated user object
-    const userRole = "ADMIN"; // Replace this with your actual user role logic
+    const token = req.headers.authorization?.split(" ")[1];
 
-    if (roles.includes(userRole)) {
-      next();
-    } else {
-      res.status(403).json({ message: "Unauthorized" });
+    if (!token) {
+      return res.status(401).json({ message: "Missing token" });
+    }
+
+    try {
+      const decodedToken: any = jwt.verify(token, process.env.TOKEN_KEY);
+      const userRoles = decodedToken.roles;
+
+      const hasRequiredRole = userRoles.some((role: string) =>
+        roles.includes(role)
+      );
+
+      if (hasRequiredRole) {
+        next();
+      } else {
+        res.status(403).json({ message: "Unauthorized" });
+      }
+    } catch (error) {
+      res.status(401).json({ message: "Invalid token" });
     }
   };
 };

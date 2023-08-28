@@ -26,13 +26,21 @@ export async function login(req: Request, res: Response) {
       const passwordsMatch = await bcrypt.compare(password, user.password);
 
       if (passwordsMatch) {
-        const roles = user.UserRole.map((userRole) => userRole.role.name);
+        const roles = user.UserRole.map((userRole) => ({
+          role: userRole.role.name,
+          isApproved: userRole.is_approved,
+        }));
+
+        const vendorRole = roles.find((role) => role.role === "Vendor");
+
+        const isVendorApproved = vendorRole ? vendorRole.isApproved : true;
 
         const accessToken = jwt.sign(
           {
             userId: user.id,
             email: user.email,
             roles: roles,
+            is_approved: isVendorApproved,
           },
           process.env.TOKEN_KEY,
           {

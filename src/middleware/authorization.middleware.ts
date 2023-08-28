@@ -21,15 +21,23 @@ export const authorize = (roles: string[]) => {
       const decodedToken: any = jwt.verify(token, process.env.TOKEN_KEY);
       const userRoles = decodedToken.roles;
 
-      const hasRequiredRole = userRoles.some((role: string) =>
-        roles.includes(role)
+      const hasRequiredRole = userRoles.some((userRole: any) =>
+        roles.includes(userRole.role)
       );
 
-      if (hasRequiredRole) {
-        next();
-      } else {
-        res.status(403).json({ message: "Unauthorized" });
+      if (!hasRequiredRole) {
+        return res.status(403).json({ message: "Unauthorized" });
       }
+
+      if (roles.includes("Vendor")) {
+        const isVendorApproved = decodedToken.is_approved;
+
+        if (!isVendorApproved) {
+          return res.status(403).json({ message: "Vendor not approved yet" });
+        }
+      }
+
+      next();
     } catch (error) {
       res.status(401).json({ message: "Invalid token" });
     }

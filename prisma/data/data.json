@@ -24,11 +24,13 @@
   "userRoles": [
     {
       "role_id": "664211ac-c22a-435f-a986-6594bf22d08c",
-      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
+      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9",
+      "is_approved": false
     },
     {
       "role_id": "5fb10e5a-d14c-4579-afb5-904cf283a463",
-      "user_id": "ff89d5af-53ad-446b-ae7c-eb965571cf39"
+      "user_id": "ff89d5af-53ad-446b-ae7c-eb965571cf39",
+      "is_approved": true
     }
   ],
   "markets": [

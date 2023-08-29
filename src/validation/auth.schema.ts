@@ -23,6 +23,16 @@ export const refreshTokenSchema = object({
   }),
 });
 
+export const confirmationTokenSchema = object({
+  body: object({
+    token: string().required(),
+    user_id: string().uuid().required(),
+  }),
+});
+
 export type LoginInfoDto = InferType<typeof loginSchema>["body"];
 export type RegisterInfoDto = InferType<typeof registerSchema>["body"];
 export type RefreshTokenDto = InferType<typeof refreshTokenSchema>["body"];
+export type ConfirmationTokenDto = InferType<
+  typeof confirmationTokenSchema
+>["body"];

@@ -12,6 +12,7 @@ import {
   UserIdDto,
   UserUpdateDto,
 } from "../validation/user.schema";
+import bcrypt from "bcrypt";
 
 export async function getAllUsers(_, res: Response) {
   try {
@@ -49,6 +50,9 @@ export async function createUser(req: Request, res: Response) {
 export async function updateUser(req: Request, res: Response) {
   const user = req.body as UserUpdateDto;
   try {
+    if (user.password) {
+      user.password = await bcrypt.hash(user.password, 10);
+    }
     const updatedUser: User = await updateById(user);
     res.status(200).json(updatedUser);
   } catch (error) {

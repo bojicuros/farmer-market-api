@@ -8,13 +8,17 @@ import {
   getConfirmationToken,
   wrongConfirmationToken,
   rightConfirmationToken,
+  deleteConfirmationToken,
+  updatePassword,
 } from "../services/auth.service";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 import {
   ConfirmationTokenDto,
+  EmailDto,
   LoginInfoDto,
+  PasswordTokenDto,
   RefreshTokenDto,
   RegisterInfoDto,
 } from "../validation/auth.schema";
@@ -83,28 +87,13 @@ export async function register(req: Request, res: Response) {
       return;
     }
 
-    const hashedPassword = await bcrypt.hash(body.password, 10);
-
-    const newUser = await createUser({
-      email: body.email,
-      first_name: body.first_name,
-      last_name: body.last_name,
-      password: hashedPassword,
-      phone_number: body.phone_number,
-    });
+    const newUser = await createUser(body);
 
     const secretToken = generateConfirmationToken();
 
     createConfirmationToken(secretToken, newUser.id);
 
-    const emailOptions = {
-      from: marketEmail,
-      to: newUser.email,
-      subject: "Email Confirmation",
-      text: `Here is your confirmation token: ${secretToken}`,
-    };
-
-    sendEmail(emailOptions);
+    sendConfirmationEmail(newUser.email, secretToken);
 
     res.status(201).json({
       id: newUser.id,
@@ -121,6 +110,17 @@ export async function register(req: Request, res: Response) {
 function generateConfirmationToken(): string {
   const token = Math.floor(100000 + Math.random() * 900000).toString();
   return token;
+}
+
+function sendConfirmationEmail(email: string, secretToken: string) {
+  const emailOptions = {
+    from: marketEmail,
+    to: email,
+    subject: "Email Confirmation",
+    text: `Here is your confirmation token: ${secretToken}`,
+  };
+
+  sendEmail(emailOptions);
 }
 
 export async function refreshAccessToken(req: Request, res: Response) {
@@ -150,7 +150,7 @@ export async function refreshAccessToken(req: Request, res: Response) {
   }
 }
 
-export async function confirmToken(req: Request, res: Response) {
+export async function confirmEmailToken(req: Request, res: Response) {
   const { token, user_id } = req.body as ConfirmationTokenDto;
   try {
     const confirmationToken = await getConfirmationToken(user_id);
@@ -166,6 +166,44 @@ export async function confirmToken(req: Request, res: Response) {
       return res.status(401).json({
         error: "Number of failed attempts is 3. Your profile is now deleted",
       });
+    res.status(401).json({ error: "Invalid confirmation token" });
+  } catch (error) {
+    res.status(500).json({ error: "Error confirmation token" });
+  }
+}
+
+export async function forgotPassword(req: Request, res: Response) {
+  const email = (req.query as EmailDto).email;
+
+  try {
+    const user = await getUser(email);
+
+    const secretToken = generateConfirmationToken();
+
+    createConfirmationToken(secretToken, user.id);
+
+    sendConfirmationEmail(user.email, secretToken);
+
+    res.status(201).json({ message: "Email sent" });
+  } catch (error) {
+    res.status(500).json({ error: "Error registering user" });
+  }
+}
+
+export async function confirmPasswordToken(req: Request, res: Response) {
+  const { token, email, password } = req.body as PasswordTokenDto;
+  try {
+    const user = await getUser(email);
+    const confirmationToken = await getConfirmationToken(user.id);
+    const isTokenValid = await bcrypt.compare(token, confirmationToken.token);
+
+    if (isTokenValid) {
+      await deleteConfirmationToken(confirmationToken.id);
+      const user = await getUser(email);
+      await updatePassword(user.id, password);
+      return res.status(201).json({ message: "Successfully changed password" });
+    }
+
     res.status(401).json({ error: "Invalid confirmation token" });
   } catch (error) {
     res.status(500).json({ error: "Error confirmation token" });

@@ -19,11 +19,13 @@ model User {
   phone_number String?
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
+  confirmed    Boolean  @default(false)
 
-  UserRole    UserRole[]
-  Price       Price[]
-  UserMarket  UserMarket[]
-  UserSession UserSession[]
+  UserRole          UserRole[]
+  Price             Price[]
+  UserMarket        UserMarket[]
+  UserSession       UserSession[]
+  confirmationToken ConfirmationToken?
 }
 
 model Role {
@@ -101,4 +103,15 @@ model Price {
   user    User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([market_id, product_id, price_date])
+}
+
+model ConfirmationToken {
+  id              String    @id @default(uuid())
+  token           String    @unique
+  user_id         String    @unique
+  failed_attempts Int       @default(0)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime? @updatedAt
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }

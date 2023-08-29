@@ -10,7 +10,8 @@
       "password": "password1",
       "first_name": "John",
       "last_name": "Doe",
-      "phone_number": "1234567890"
+      "phone_number": "1234567890",
+      "confirmed": true
     },
     {
       "id": "ff89d5af-53ad-446b-ae7c-eb965571cf39",
@@ -18,7 +19,8 @@
       "password": "password2",
       "first_name": "Jane",
       "last_name": "Smith",
-      "phone_number": "9876543210"
+      "phone_number": "9876543210",
+      "confirmed": true
     }
   ],
   "userRoles": [

@@ -4,16 +4,22 @@ import {
   createUser,
   getUserByRefreshToken,
   createUserSession,
+  createConfirmationToken,
+  getConfirmationToken,
+  wrongConfirmationToken,
+  rightConfirmationToken,
 } from "../services/auth.service";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 import {
+  ConfirmationTokenDto,
   LoginInfoDto,
   RefreshTokenDto,
   RegisterInfoDto,
 } from "../validation/auth.schema";
 import { randomBytes } from "crypto";
+import { marketEmail, sendEmail } from "../services/mail.service";
 
 dotenv.config();
 
@@ -87,10 +93,34 @@ export async function register(req: Request, res: Response) {
       phone_number: body.phone_number,
     });
 
-    res.status(201).json(newUser);
+    const secretToken = generateConfirmationToken();
+
+    createConfirmationToken(secretToken, newUser.id);
+
+    const emailOptions = {
+      from: marketEmail,
+      to: newUser.email,
+      subject: "Email Confirmation",
+      text: `Here is your confirmation token: ${secretToken}`,
+    };
+
+    sendEmail(emailOptions);
+
+    res.status(201).json({
+      id: newUser.id,
+      email: newUser.email,
+      first_name: newUser.first_name,
+      last_name: newUser.last_name,
+      phone_number: newUser.phone_number,
+    });
   } catch (error) {
     res.status(500).json({ error: "Error registering user" });
   }
+}
+
+function generateConfirmationToken(): string {
+  const token = Math.floor(100000 + Math.random() * 900000).toString();
+  return token;
 }
 
 export async function refreshAccessToken(req: Request, res: Response) {
@@ -117,5 +147,27 @@ export async function refreshAccessToken(req: Request, res: Response) {
     }
   } catch (error) {
     res.status(500).json({ error: "Error refreshing token" });
+  }
+}
+
+export async function confirmToken(req: Request, res: Response) {
+  const { token, user_id } = req.body as ConfirmationTokenDto;
+  try {
+    const confirmationToken = await getConfirmationToken(user_id);
+    const isTokenValid = await bcrypt.compare(token, confirmationToken.token);
+
+    if (isTokenValid) {
+      rightConfirmationToken(user_id);
+      return res.status(200).json({ message: "Successfully confirmed" });
+    }
+
+    const wrongToken = wrongConfirmationToken(user_id);
+    if ((await wrongToken).failed_attempts === 3)
+      return res.status(401).json({
+        error: "Number of failed attempts is 3. Your profile is now deleted",
+      });
+    res.status(401).json({ error: "Invalid confirmation token" });
+  } catch (error) {
+    res.status(500).json({ error: "Error confirmation token" });
   }
 }

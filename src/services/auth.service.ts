@@ -1,6 +1,7 @@
-import { ConfirmationToken, User } from "@prisma/client";
+import { User } from "@prisma/client";
 import { prisma } from "../../src/utils/db.server";
 import bcrypt from "bcrypt";
+import { RegisterInfoDto } from "../validation/auth.schema";
 
 export async function getUser(userEmail: string) {
   return prisma.user.findUnique({
@@ -15,10 +16,16 @@ export async function getUser(userEmail: string) {
   });
 }
 
-export async function createUser(user) {
+export async function createUser(user: RegisterInfoDto) {
+  const hashedPassword = await bcrypt.hash(user.password, 10);
+
   return prisma.user.create({
     data: {
-      ...user,
+      email: user.email,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      password: hashedPassword,
+      phone_number: user.phone_number,
       UserRole: {
         create: [
           {
@@ -104,11 +111,7 @@ export async function rightConfirmationToken(user_id: string) {
     });
 
     if (tokenData) {
-      await prisma.confirmationToken.delete({
-        where: {
-          id: tokenData.id,
-        },
-      });
+      await deleteConfirmationToken(tokenData.id);
 
       await prisma.user.update({
         where: { id: user_id },
@@ -118,6 +121,14 @@ export async function rightConfirmationToken(user_id: string) {
   } catch (e) {
     throw e;
   }
+}
+
+export async function deleteConfirmationToken(id: string) {
+  await prisma.confirmationToken.delete({
+    where: {
+      id: id,
+    },
+  });
 }
 
 export async function wrongConfirmationToken(user_id: string) {
@@ -137,6 +148,29 @@ export async function wrongConfirmationToken(user_id: string) {
       await prisma.confirmationToken.delete({ where: { user_id: user_id } });
 
     return updatedToken;
+  } catch (e) {
+    throw e;
+  }
+}
+
+export async function updatePassword(user_id: string, password: string) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: user_id,
+      },
+    });
+
+    if (!user) throw new Error("No user found");
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const updatedUser = await prisma.user.update({
+      where: { id: user_id },
+      data: { password: hashedPassword },
+    });
+
+    return updatedUser;
   } catch (e) {
     throw e;
   }

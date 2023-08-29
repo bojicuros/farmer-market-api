@@ -3,12 +3,16 @@ import {
   login,
   register,
   refreshAccessToken,
-  confirmToken,
+  forgotPassword,
+  confirmEmailToken,
+  confirmPasswordToken,
 } from "../controllers/auth.controller";
 import { validate } from "../middleware/validation.middleware";
 import {
-  confirmationTokenSchema,
+  emailSchema,
+  emailTokenSchema,
   loginSchema,
+  passwordTokenSchema,
   refreshTokenSchema,
   registerSchema,
 } from "../validation/auth.schema";
@@ -18,7 +22,17 @@ const router = express.Router();
 router.post("/login", validate(loginSchema), login);
 router.post("/register", validate(registerSchema), register);
 router.post("/refresh", validate(refreshTokenSchema), refreshAccessToken);
-router.post("/email-confirm", validate(confirmationTokenSchema), confirmToken);
+router.post(
+  "/email-token-confirm",
+  validate(emailTokenSchema),
+  confirmEmailToken
+);
+router.post("/forgot-password", validate(emailSchema), forgotPassword);
+router.post(
+  "/password-token-confirm",
+  validate(passwordTokenSchema),
+  confirmPasswordToken
+);
 
 const authRouter = router;
 export default authRouter;

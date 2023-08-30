@@ -40,13 +40,13 @@
       "id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
       "name": "Farmers Market",
       "image_url": "https://mediaproxy.salon.com/width/1200/https://media.salon.com/2021/08/farmers-market-produce-0812211.jpg",
-      "location": "Some Location"
+      "address": "Some address"
     },
     {
       "id": "0c93ffe5-cc20-4e97-bec4-fc99e20fb62b",
       "name": "Organic Market",
       "image_url": "https://mediaproxy.salon.com/width/1200/https://media.salon.com/2021/08/farmers-market-produce-0812211.jpg",
-      "location": "Another Location"
+      "address": "Some other adress"
     }
   ],
   "userMarket": [

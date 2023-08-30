@@ -59,7 +59,9 @@ model UserSession {
 model Market {
   id         String   @id @default(uuid())
   name       String
-  location   String?
+  address    String?
+  lat        String?
+  lng        String?
   image_url  String
   is_open    Boolean  @default(true)
   created_at DateTime @default(now())

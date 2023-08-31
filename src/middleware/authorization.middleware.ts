@@ -22,7 +22,7 @@ export const authorize = (roles: string[]) => {
       const userRoles = decodedToken.roles;
 
       const hasRequiredRole = userRoles.some((userRole: any) =>
-        roles.includes(userRole.role)
+        roles.includes(userRole)
       );
 
       if (!hasRequiredRole) {

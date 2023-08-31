@@ -6,7 +6,7 @@ export const userCreateSchema = object({
     first_name: string().required(),
     last_name: string().required(),
     password: string().min(8).required(),
-    phone_number: string().min(8),
+    phone_number: string(),
   }),
 });
 
@@ -17,7 +17,7 @@ export const userUpdateSchema = object({
     first_name: string(),
     last_name: string(),
     password: string().min(8),
-    phone_number: string().min(8),
+    phone_number: string(),
   }),
 });
 

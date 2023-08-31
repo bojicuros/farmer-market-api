@@ -46,7 +46,13 @@
       "id": "0c93ffe5-cc20-4e97-bec4-fc99e20fb62b",
       "name": "Organic Market",
       "image_url": "https://mediaproxy.salon.com/width/1200/https://media.salon.com/2021/08/farmers-market-produce-0812211.jpg",
-      "address": "Some other adress"
+      "address": "Some other address"
+    },
+    {
+      "id": "9b8541f7-cbb2-490c-b831-4a1f14df7f0a",
+      "name": "Local Market",
+      "image_url": "https://mediaproxy.salon.com/width/1200/https://media.salon.com/2021/08/farmers-market-produce-0812211.jpg",
+      "address": "Trial address"
     }
   ],
   "userMarket": [
@@ -71,6 +77,78 @@
       "name": "Tomatoes",
       "description": "Ripe tomatoes",
       "unit_of_measurement": "kilo"
+    },
+    {
+      "id": "3f92d6e3-9aeb-4af4-975a-ec5d2ac7bcb1",
+      "name": "Bananas",
+      "description": "Yellow bananas",
+      "unit_of_measurement": "bunch"
+    },
+    {
+      "id": "9c6ad657-52ea-4a47-94e3-1cf96b4f7b6e",
+      "name": "Carrots",
+      "description": "Fresh carrots",
+      "unit_of_measurement": "kilo"
+    },
+    {
+      "id": "30a8e3a8-c3c6-48ab-96c1-4b5708225562",
+      "name": "Lettuce",
+      "description": "Crisp lettuce",
+      "unit_of_measurement": "head"
+    },
+    {
+      "id": "d1b4f935-11e1-48ab-b35b-0166f3e3b6ec",
+      "name": "Oranges",
+      "description": "Juicy oranges",
+      "unit_of_measurement": "kilo"
+    },
+    {
+      "id": "7c893a1d-d4f3-45f5-89f1-1c37a9f35595",
+      "name": "Potatoes",
+      "description": "Starchy potatoes",
+      "unit_of_measurement": "kilo"
+    },
+    {
+      "id": "6e7e1d06-1e4e-4a43-9e27-1e139c8ea750",
+      "name": "Strawberries",
+      "description": "Sweet strawberries",
+      "unit_of_measurement": "punnet"
+    },
+    {
+      "id": "fd9b3f88-992e-4aeb-9b07-2218f74ab76c",
+      "name": "Cucumbers",
+      "description": "Crisp cucumbers",
+      "unit_of_measurement": "piece"
+    },
+    {
+      "id": "1e3b3f3c-736b-4c0b-a0c8-9b3da87cf8f7",
+      "name": "Grapes",
+      "description": "Sweet grapes",
+      "unit_of_measurement": "kilo"
+    },
+    {
+      "id": "98a63c47-95a2-44e2-875b-2dbfba843e23",
+      "name": "Bell Peppers",
+      "description": "Colorful bell peppers",
+      "unit_of_measurement": "piece"
+    },
+    {
+      "id": "22e727f3-79ac-42da-a2f4-8a81b85e9d5a",
+      "name": "Pineapples",
+      "description": "Fresh pineapples",
+      "unit_of_measurement": "piece"
+    },
+    {
+      "id": "4d3c5e6b-1df3-4d1c-9f7e-2115b0637db7",
+      "name": "Mangoes",
+      "description": "Ripe mangoes",
+      "unit_of_measurement": "piece"
+    },
+    {
+      "id": "c82eaeb5-35b1-429d-9b85-0e81b032b6b8",
+      "name": "Watermelons",
+      "description": "Juicy watermelons",
+      "unit_of_measurement": "piece"
     }
   ],
   "prices": [
@@ -89,6 +167,102 @@
       "price_date": "2023-08-05T08:00:00.000Z",
       "price_value": 3.0,
       "user_id": "ff89d5af-53ad-446b-ae7c-eb965571cf39"
+    },
+    {
+      "id": "f34d59c3-9e9d-4f1c-b04f-d9eb6e0d1ca9",
+      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
+      "product_id": "3f92d6e3-9aeb-4af4-975a-ec5d2ac7bcb1",
+      "price_date": "2023-08-05T08:00:00.000Z",
+      "price_value": 1.0,
+      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
+    },
+    {
+      "id": "c8c4e832-51d6-4f02-95cd-99a6a46d68ef",
+      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
+      "product_id": "9c6ad657-52ea-4a47-94e3-1cf96b4f7b6e",
+      "price_date": "2023-08-05T08:00:00.000Z",
+      "price_value": 1.5,
+      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
+    },
+    {
+      "id": "e25af0c6-b537-4a84-ba9c-9da8ea42d0b7",
+      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
+      "product_id": "30a8e3a8-c3c6-48ab-96c1-4b5708225562",
+      "price_date": "2023-08-05T08:00:00.000Z",
+      "price_value": 0.8,
+      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
+    },
+    {
+      "id": "3f927e75-d7eb-432d-86a5-7ad9b362cf54",
+      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
+      "product_id": "d1b4f935-11e1-48ab-b35b-0166f3e3b6ec",
+      "price_date": "2023-08-05T08:00:00.000Z",
+      "price_value": 2.2,
+      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
+    },
+    {
+      "id": "7d5bdcfd-5826-4b36-83ef-0e9e94a870d1",
+      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
+      "product_id": "7c893a1d-d4f3-45f5-89f1-1c37a9f35595",
+      "price_date": "2023-08-05T08:00:00.000Z",
+      "price_value": 1.2,
+      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
+    },
+    {
+      "id": "ba2e1f65-79b7-4e4c-b862-945e50d8db89",
+      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
+      "product_id": "6e7e1d06-1e4e-4a43-9e27-1e139c8ea750",
+      "price_date": "2023-08-05T08:00:00.000Z",
+      "price_value": 2.8,
+      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
+    },
+    {
+      "id": "8b4603aa-8d2b-4b27-8ef2-bb04f9c6eb64",
+      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
+      "product_id": "fd9b3f88-992e-4aeb-9b07-2218f74ab76c",
+      "price_date": "2023-08-05T08:00:00.000Z",
+      "price_value": 0.6,
+      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
+    },
+    {
+      "id": "4b087c12-4295-408f-b7a7-dc5466dd85ea",
+      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
+      "product_id": "1e3b3f3c-736b-4c0b-a0c8-9b3da87cf8f7",
+      "price_date": "2023-08-05T08:00:00.000Z",
+      "price_value": 4.5,
+      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
+    },
+    {
+      "id": "b4d9978e-d6d6-4fa0-9295-e8d6ea243794",
+      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
+      "product_id": "98a63c47-95a2-44e2-875b-2dbfba843e23",
+      "price_date": "2023-08-05T08:00:00.000Z",
+      "price_value": 1.8,
+      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
+    },
+    {
+      "id": "fc8d92d0-1b7d-4e12-b442-cedd3de29561",
+      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
+      "product_id": "22e727f3-79ac-42da-a2f4-8a81b85e9d5a",
+      "price_date": "2023-08-05T08:00:00.000Z",
+      "price_value": 5.0,
+      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
+    },
+    {
+      "id": "5e07e5b0-673f-4f9b-bd95-c29b06be996a",
+      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
+      "product_id": "4d3c5e6b-1df3-4d1c-9f7e-2115b0637db7",
+      "price_date": "2023-08-05T08:00:00.000Z",
+      "price_value": 3.5,
+      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
+    },
+    {
+      "id": "9e4a1a7e-5edd-40b4-9e72-865fcadad9b3",
+      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
+      "product_id": "c82eaeb5-35b1-429d-9b85-0e81b032b6b8",
+      "price_date": "2023-08-05T08:00:00.000Z",
+      "price_value": 8.0,
+      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
     }
   ]
 }

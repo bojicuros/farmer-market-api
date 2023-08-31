@@ -48,6 +48,7 @@ export async function login(req: Request, res: Response) {
         const accessToken = jwt.sign(
           {
             userId: user.id,
+            name: user.first_name + " " + user.last_name,
             email: user.email,
             roles: roleNames,
             is_approved: isVendorApproved,
@@ -145,6 +146,7 @@ export async function refreshAccessToken(req: Request, res: Response) {
       const accessToken = jwt.sign(
         {
           userId: user.id,
+          name: user.first_name + " " + user.last_name,
           email: user.email,
           roles: roleNames,
           is_approved: isVendorApproved,

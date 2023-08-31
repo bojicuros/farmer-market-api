@@ -20,6 +20,7 @@ import {
   PasswordTokenDto,
   RefreshTokenDto,
   RegisterInfoDto,
+  ResetTokenDto,
 } from "../validation/auth.schema";
 import { randomBytes } from "crypto";
 import { sendEmail } from "../services/mail.service";
@@ -206,6 +207,35 @@ export async function forgotPassword(req: Request, res: Response) {
   }
 }
 
+export async function emailAvailable(req: Request, res: Response) {
+  const email = (req.query as EmailDto).email;
+
+  try {
+    const user = await getUser(email);
+
+    res.status(200).json({ available: user ? false : true });
+  } catch (error) {
+    res.status(500).json({ error: "Error checking email" });
+  }
+}
+
+export async function validateResetToken(req: Request, res: Response) {
+  const { token, email } = req.body as ResetTokenDto;
+  try {
+    const user = await getUser(email);
+    const confirmationToken = await getConfirmationToken(user.id);
+    const isTokenValid = await bcrypt.compare(token, confirmationToken.token);
+
+    if (isTokenValid) {
+      return res.status(201).json({ message: "Successfully validated token" });
+    }
+
+    res.status(401).json({ error: "Invalid confirmation token" });
+  } catch (error) {
+    res.status(500).json({ error: "Error confirmation token" });
+  }
+}
+
 export async function confirmPasswordToken(req: Request, res: Response) {
   const { token, email, password } = req.body as PasswordTokenDto;
   try {
@@ -215,7 +245,6 @@ export async function confirmPasswordToken(req: Request, res: Response) {
 
     if (isTokenValid) {
       await deleteConfirmationToken(confirmationToken.id);
-      const user = await getUser(email);
       await updatePassword(user.id, password);
       return res.status(201).json({ message: "Successfully changed password" });
     }

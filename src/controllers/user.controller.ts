@@ -7,11 +7,7 @@ import {
   deleteById,
 } from "../services/user.service";
 import { User } from "@prisma/client";
-import {
-  UserCreateDto,
-  UserIdDto,
-  UserUpdateDto,
-} from "../validation/user.schema";
+import { UserIdDto, UserUpdateDto } from "../validation/user.schema";
 import bcrypt from "bcrypt";
 
 export async function getAllUsers(_, res: Response) {

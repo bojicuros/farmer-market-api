@@ -13,7 +13,6 @@ import {
 } from "../services/auth.service";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import * as dotenv from "dotenv";
 import {
   ConfirmationTokenDto,
   EmailDto,
@@ -23,9 +22,8 @@ import {
   RegisterInfoDto,
 } from "../validation/auth.schema";
 import { randomBytes } from "crypto";
-import { marketEmail, sendEmail } from "../services/mail.service";
-
-dotenv.config();
+import { sendEmail } from "../services/mail.service";
+import { config } from "../utils/config";
 
 export async function login(req: Request, res: Response) {
   const { email, password } = req.body as LoginInfoDto;
@@ -45,14 +43,16 @@ export async function login(req: Request, res: Response) {
 
         const isVendorApproved = vendorRole ? vendorRole.isApproved : true;
 
+        const roleNames = roles.map((role) => role.role);
+
         const accessToken = jwt.sign(
           {
             userId: user.id,
             email: user.email,
-            roles: roles,
+            roles: roleNames,
             is_approved: isVendorApproved,
           },
-          process.env.TOKEN_KEY,
+          config.tokenKey,
           {
             expiresIn: "1h",
           }
@@ -114,7 +114,7 @@ function generateConfirmationToken(): string {
 
 function sendConfirmationEmail(email: string, secretToken: string) {
   const emailOptions = {
-    from: marketEmail,
+    from: config.email,
     to: email,
     subject: "Email Confirmation",
     text: `Here is your confirmation token: ${secretToken}`,
@@ -126,16 +126,30 @@ function sendConfirmationEmail(email: string, secretToken: string) {
 export async function refreshAccessToken(req: Request, res: Response) {
   const { refreshToken } = req.body as RefreshTokenDto;
   try {
-    const user = await getUserByRefreshToken(refreshToken);
+    const session = await getUserByRefreshToken(refreshToken);
+
+    const user = session.user;
 
     if (user) {
+      const roles = user.UserRole.map((userRole) => ({
+        role: userRole.role.name,
+        isApproved: userRole.is_approved,
+      }));
+
+      const vendorRole = roles.find((role) => role.role === "Vendor");
+
+      const isVendorApproved = vendorRole ? vendorRole.isApproved : true;
+
+      const roleNames = roles.map((role) => role.role);
+
       const accessToken = jwt.sign(
         {
           userId: user.id,
           email: user.email,
-          roles: user.UserRole.map((userRole) => userRole.role.name),
+          roles: roleNames,
+          is_approved: isVendorApproved,
         },
-        process.env.TOKEN_KEY,
+        config.tokenKey,
         {
           expiresIn: "1h",
         }

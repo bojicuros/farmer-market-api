@@ -1,17 +1,13 @@
 import nodemailer from "nodemailer";
 import { Options } from "nodemailer/lib/mailer";
-import * as dotenv from "dotenv";
-
-dotenv.config();
-
-export const marketEmail = process.env.GOOGLE_EMAIL;
+import { config } from "../utils/config";
 
 const createTransporter = async () => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: process.env.GOOGLE_EMAIL,
-      pass: process.env.GOOGLE_PASSWORD,
+      user: config.email,
+      pass: config.password,
     },
   });
   return transporter;

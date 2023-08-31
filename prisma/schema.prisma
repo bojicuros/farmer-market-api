@@ -59,7 +59,7 @@ model UserSession {
 model Market {
   id         String   @id @default(uuid())
   name       String
-  address    String?
+  address    String
   lat        String?
   lng        String?
   image_url  String
@@ -83,11 +83,12 @@ model UserMarket {
 }
 
 model Product {
-  id          String   @id @default(uuid())
-  name        String   @unique
-  description String?
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  id                  String   @id @default(uuid())
+  name                String   @unique
+  description         String?
+  unit_of_measurement String
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
 
   prices Price[]
 }
@@ -96,7 +97,7 @@ model Price {
   id          String   @id @default(uuid())
   market_id   String
   product_id  String
-  price_date  DateTime @db.Date
+  price_date  DateTime
   price_value Float
   user_id     String
 

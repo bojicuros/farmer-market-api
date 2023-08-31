@@ -12,11 +12,10 @@ import {
   marketIdSchema,
   marketUpdateSchema,
 } from "../validation/market.schema";
-import { authorize } from "../middleware/authorization.middleware";
 
 const router = express.Router();
 
-router.get("/get-all", authorize(["Admin"]), getAllMarkets);
+router.get("/get-all", getAllMarkets);
 router.get("/get-by-id", validate(marketIdSchema), getMarketById);
 router.post("/create", validate(marketCreateSchema), createMarket);
 router.put("/update-by-id", validate(marketUpdateSchema), updateMarket);

@@ -21,14 +21,9 @@ export const authorize = (roles: string[]) => {
       const decodedToken: any = jwt.verify(token, process.env.TOKEN_KEY);
       const userRoles = decodedToken.roles;
 
-      console.log(userRoles);
-      console.log(roles);
-
       const hasRequiredRole = userRoles.some((userRole: any) =>
         roles.includes(userRole)
       );
-
-      console.log(hasRequiredRole);
 
       if (!hasRequiredRole) {
         return res.status(403).json({ message: "Unauthorized" });

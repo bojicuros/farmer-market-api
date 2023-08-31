@@ -57,7 +57,7 @@ export async function getUserByRefreshToken(refreshToken: string) {
         },
       },
     });
-    return session.user;
+    return session;
   } catch (error) {
     throw error;
   }

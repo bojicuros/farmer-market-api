@@ -9,7 +9,7 @@ export const marketIdSchema = object({
 export const marketCreateSchema = object({
   body: object({
     name: string().required(),
-    address: string(),
+    address: string().required(),
     lat: string().matches(
       /^-?([1-8]?[0-9]\.{1}\d{1,6}|90\.{1}0{1,6})$/,
       "Invalid latitude value"

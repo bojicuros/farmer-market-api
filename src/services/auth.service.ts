@@ -2,6 +2,7 @@ import { User } from "@prisma/client";
 import { prisma } from "../../src/utils/db.server";
 import bcrypt from "bcrypt";
 import { RegisterInfoDto } from "../validation/auth.schema";
+import { MAX_FAILED_ATTEMPTS_EMAIL } from "../controllers/auth.controller";
 
 export async function getUser(userEmail: string) {
   return prisma.user.findUnique({
@@ -144,8 +145,10 @@ export async function wrongConfirmationToken(user_id: string) {
       data: { failed_attempts: confToken.failed_attempts + 1 },
     });
 
-    if (updatedToken.failed_attempts === 3)
+    if (updatedToken.failed_attempts === MAX_FAILED_ATTEMPTS_EMAIL) {
       await prisma.confirmationToken.delete({ where: { user_id: user_id } });
+      await prisma.user.delete({ where: { id: user_id } });
+    }
 
     return updatedToken;
   } catch (e) {

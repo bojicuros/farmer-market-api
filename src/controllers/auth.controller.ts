@@ -26,6 +26,8 @@ import { randomBytes } from "crypto";
 import { sendEmail } from "../services/mail.service";
 import { config } from "../utils/config";
 
+export const MAX_FAILED_ATTEMPTS_EMAIL = 3;
+
 export async function login(req: Request, res: Response) {
   const { email, password } = req.body as LoginInfoDto;
   try {
@@ -179,9 +181,10 @@ export async function confirmEmailToken(req: Request, res: Response) {
     }
 
     const wrongToken = wrongConfirmationToken(user_id);
-    if ((await wrongToken).failed_attempts === 3)
+    if ((await wrongToken).failed_attempts === MAX_FAILED_ATTEMPTS_EMAIL)
       return res.status(401).json({
-        error: "Number of failed attempts is 3. Your profile is now deleted",
+        error:
+          "You have react maximal number of attempts. Your profile is now deleted",
       });
     res.status(401).json({ error: "Invalid confirmation token" });
   } catch (error) {

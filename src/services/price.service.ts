@@ -14,6 +14,7 @@ export async function getLastPrices(marketId: string) {
       price_date: true,
       product: {
         select: {
+          id: true,
           name: true,
           unit_of_measurement: true,
         },

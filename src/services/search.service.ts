@@ -19,7 +19,7 @@ export async function search(query: string) {
       JOIN public."Product" p ON pr.product_id = p.id
       JOIN public."Market" m ON pr.market_id = m.id
       WHERE p.name ILIKE '%' || ${query} || '%'
-
+      GROUP BY m.name, p."name" 
   `;
   return results;
 }

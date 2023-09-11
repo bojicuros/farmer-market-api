@@ -5,6 +5,7 @@ import userRouter from "./routers/user.router";
 import marketRouter from "./routers/market.router";
 import authRouter from "./routers/auth.router";
 import priceRouter from "./routers/price.router";
+import searchRouter from "./routers/search.router";
 
 if (!config.port) {
   process.exit(1);
@@ -21,6 +22,7 @@ app.use("/api/users", userRouter);
 app.use("/api/markets", marketRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/prices", priceRouter);
+app.use("/api/search", searchRouter);
 
 app.get("/api/healthchecker", (_, res: Response) => {
   res.status(200).json({

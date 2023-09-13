@@ -1,4 +1,4 @@
-import { InferType, object, string } from "yup";
+import { InferType, boolean, object, string } from "yup";
 
 export const userCreateSchema = object({
   body: object({
@@ -18,6 +18,7 @@ export const userUpdateSchema = object({
     last_name: string(),
     password: string().min(8),
     phone_number: string(),
+    is_active: boolean(),
   }),
 });
 

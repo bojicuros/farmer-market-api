@@ -20,6 +20,7 @@ model User {
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
   confirmed    Boolean  @default(false)
+  is_active    Boolean  @default(true)
 
   UserRole          UserRole[]
   Price             Price[]

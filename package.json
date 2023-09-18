@@ -1,7 +1,7 @@
 {
   "name": "tutorial",
   "version": "1.0.0",
-  "description": "",
+  "description": "Market Price API for managing user, markets and product prices.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,11 +10,16 @@
   "prisma": {
     "seed": "node --require esbuild-register ./prisma/data/seed.ts"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "market",
+    "price",
+    "API",
+    "ecommerce"
+  ],
+  "author": "Uroš Bojić",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^5.2.0",
+    "@prisma/client": "^5.3.0",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
@@ -33,7 +38,7 @@
     "@types/nodemailer": "^6.4.9",
     "esbuild-register": "^3.4.2",
     "nodemon": "^3.0.1",
-    "prisma": "^5.2.0",
+    "prisma": "^5.3.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
   }

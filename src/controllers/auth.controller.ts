@@ -56,6 +56,7 @@ export async function login(req: Request, res: Response) {
             roles: roleNames,
             is_approved: isVendorApproved,
             is_confirmed: user.confirmed,
+            is_active: user.is_active,
           },
           config.tokenKey,
           {
@@ -155,6 +156,7 @@ export async function refreshAccessToken(req: Request, res: Response) {
           roles: roleNames,
           is_approved: isVendorApproved,
           is_confirmed: user.confirmed,
+          is_active: user.is_active,
         },
         config.tokenKey,
         {

@@ -113,6 +113,25 @@ export async function register(req: Request, res: Response) {
   }
 }
 
+export async function requireConfirmationToken(req: Request, res: Response) {
+  const email = (req.query as EmailDto).email;
+  try {
+    const user = await getUser(email);
+
+    if (user) {
+      const secretToken = generateConfirmationToken();
+
+      createConfirmationToken(secretToken, user.id);
+
+      sendConfirmationEmail(user.email, secretToken);
+
+      res.json("Code sent");
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error sending confirmation token" });
+  }
+}
+
 function generateConfirmationToken(): string {
   const token = Math.floor(100000 + Math.random() * 900000).toString();
   return token;

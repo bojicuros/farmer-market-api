@@ -81,6 +81,10 @@ export async function createUserSession(user: User, refreshToken: string) {
 export async function createConfirmationToken(token: string, user_id: string) {
   const hashedToken = await bcrypt.hash(token, 10);
 
+  await prisma.confirmationToken.deleteMany({
+    where: { user_id: user_id },
+  });
+
   await prisma.confirmationToken.create({
     data: {
       token: hashedToken,

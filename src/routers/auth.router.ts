@@ -8,6 +8,7 @@ import {
   confirmPasswordToken,
   validateResetToken,
   emailAvailable,
+  requireConfirmationToken,
 } from "../controllers/auth.controller";
 import { validate } from "../middleware/validation.middleware";
 import {
@@ -42,6 +43,7 @@ router.post(
   validate(passwordTokenSchema),
   confirmPasswordToken
 );
+router.post("/require-token", validate(emailSchema), requireConfirmationToken);
 
 const authRouter = router;
 export default authRouter;

@@ -5,6 +5,7 @@ import {
   create,
   updateById,
   deleteById,
+  getAllUnapproved,
 } from "../services/user.service";
 import { User } from "@prisma/client";
 import { UserIdDto, UserUpdateDto } from "../validation/user.schema";
@@ -30,6 +31,15 @@ export async function getUserById(req: Request, res: Response) {
     }
   } catch (error) {
     res.status(500).json({ error: "Error fetching user" });
+  }
+}
+
+export async function getAllUnapprovedUsers(_, res: Response) {
+  try {
+    const users = await getAllUnapproved();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching unapproved users" });
   }
 }
 

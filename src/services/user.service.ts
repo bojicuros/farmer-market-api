@@ -12,6 +12,18 @@ export async function getById(userId: string) {
   });
 }
 
+export async function getAllUnapproved() {
+  return prisma.user.findMany({
+    where: {
+      UserRole: {
+        some: {
+          is_approved: false,
+        },
+      },
+    },
+  });
+}
+
 export async function create(user: User) {
   const hashedPassword = await bcrypt.hash(user.password, 10);
   return prisma.user.create({

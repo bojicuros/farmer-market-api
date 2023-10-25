@@ -6,6 +6,7 @@ import {
   updateById,
   deleteById,
   getAllUnapproved,
+  getMarketByVendor,
 } from "../services/user.service";
 import { User } from "@prisma/client";
 import { UserIdDto, UserUpdateDto } from "../validation/user.schema";
@@ -67,11 +68,23 @@ export async function updateUser(req: Request, res: Response) {
 }
 
 export async function deleteUser(req: Request, res: Response) {
-  const userId = (req.query.id as UserIdDto).id;
+  const userId = (req.query as UserIdDto).id;
   try {
     await deleteById(userId);
     res.status(204).send();
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+}
+
+export async function getMarket(req: Request, res: Response) {
+  const userId = (req.query as UserIdDto).id;
+  try {
+    const market = await getMarketByVendor(userId);
+    if (market) {
+      res.status(200).json(market.UserMarket);
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching unapproved users" });
   }
 }

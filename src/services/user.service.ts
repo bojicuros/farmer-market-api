@@ -58,3 +58,23 @@ export async function deleteById(userId: string) {
     where: { id: userId },
   });
 }
+
+export async function getMarketByVendor(userId: string) {
+  const existingUser = await getById(userId);
+
+  if (!existingUser) {
+    throw new Error("User with that id is not found");
+  }
+  return await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    include: {
+      UserMarket: {
+        select: {
+          market_id: true,
+        },
+      },
+    },
+  });
+}

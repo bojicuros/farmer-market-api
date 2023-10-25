@@ -42,3 +42,25 @@ export async function getLastPrices(marketId: string) {
     },
   });
 }
+
+export async function getProductPricesByMarket(marketId: string) {
+  return await prisma.price.findMany({
+    where: {
+      market_id: marketId,
+    },
+    orderBy: {
+      price_date: "desc",
+    },
+    distinct: ["product_id"],
+    select: {
+      price_value: true,
+      price_date: true,
+      product: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+  });
+}

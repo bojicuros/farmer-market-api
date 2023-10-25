@@ -4,7 +4,7 @@ import express, { Response } from "express";
 import userRouter from "./routers/user.router";
 import marketRouter from "./routers/market.router";
 import authRouter from "./routers/auth.router";
-import priceRouter from "./routers/price.router";
+import productRouter from "./routers/product.router";
 import searchRouter from "./routers/search.router";
 
 if (!config.port) {
@@ -21,7 +21,7 @@ app.use(express.json());
 app.use("/api/users", userRouter);
 app.use("/api/markets", marketRouter);
 app.use("/api/auth", authRouter);
-app.use("/api/prices", priceRouter);
+app.use("/api/products", productRouter);
 app.use("/api/search", searchRouter);
 
 app.get("/api/healthchecker", (_, res: Response) => {

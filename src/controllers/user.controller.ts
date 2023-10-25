@@ -21,7 +21,7 @@ export async function getAllUsers(_, res: Response) {
 }
 
 export async function getUserById(req: Request, res: Response) {
-  const userId = (req.query.id as UserIdDto).id;
+  const userId = (req.query as UserIdDto).id;
   try {
     const user = await getById(userId);
     if (user) {

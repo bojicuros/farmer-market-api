@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 import { MarketIdDto } from "../validation/price.schema";
 import {
+  deleteProductById,
   getLastPrices,
   getProductPricesByMarket,
   getProductsByMarket,
   updateProductPriceById,
 } from "../services/product.service";
 import { isSameDay } from "date-fns";
-import { ProductUpdateDto } from "../validation/product.schema";
+import { ProductIdDto, ProductUpdateDto } from "../validation/product.schema";
 
 export async function getProducts(req: Request, res: Response) {
   const marketId = (req.query as MarketIdDto).market_id;
@@ -67,5 +68,17 @@ export async function updateProductPrice(req: Request, res: Response) {
     }
   } catch (error) {
     res.status(500).json({ error: "Error updating product price" });
+  }
+}
+
+export async function deleteProduct(req: Request, res: Response) {
+  const id = (req.query as ProductIdDto).id;
+  try {
+    const deletedProduct = deleteProductById(id);
+    if (deletedProduct) {
+      res.status(200).json(updateProductPrice);
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error while deleting product" });
   }
 }

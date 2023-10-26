@@ -89,3 +89,16 @@ export async function updateProductPriceById(
     },
   });
 }
+
+export async function deleteProductById(id: string) {
+  const product = await prisma.product.findUnique({
+    where: { id: id },
+  });
+
+  if (!product) {
+    throw new Error("Product with this id do not exists");
+  }
+  await prisma.product.delete({
+    where: { id: product.id },
+  });
+}

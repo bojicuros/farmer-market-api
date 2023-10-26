@@ -2,9 +2,11 @@ import express from "express";
 import { validate } from "../middleware/validation.middleware";
 import {
   marketIdSchema,
+  productIdSchema,
   productUpdateSchema,
 } from "../validation/product.schema";
 import {
+  deleteProduct,
   getLatestPrices,
   getProductPrices,
   getProducts,
@@ -21,6 +23,7 @@ router.post(
   validate(productUpdateSchema),
   updateProductPrice
 );
+router.delete("/delete-product", validate(productIdSchema), deleteProduct);
 
 const productRouter = router;
 export default productRouter;

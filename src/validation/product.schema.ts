@@ -14,5 +14,12 @@ export const productUpdateSchema = object({
   }),
 });
 
+export const productIdSchema = object({
+  query: object({
+    id: string().uuid().required(),
+  }),
+});
+
 export type MarketIdDto = InferType<typeof marketIdSchema>["query"];
 export type ProductUpdateDto = InferType<typeof productUpdateSchema>["body"];
+export type ProductIdDto = InferType<typeof productIdSchema>["query"];

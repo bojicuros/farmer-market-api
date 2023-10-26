@@ -1,8 +1,17 @@
 import { InferType, number, object, string } from "yup";
 
-export const marketIdSchema = object({
+export const productIdSchema = object({
   query: object({
-    market_id: string().uuid().required(),
+    id: string().uuid().required(),
+  }),
+});
+
+export const productSchema = object({
+  body: object({
+    id: string().uuid().required(),
+    name: string(),
+    description: string(),
+    unit_of_measurement: string(),
   }),
 });
 
@@ -14,12 +23,12 @@ export const productUpdateSchema = object({
   }),
 });
 
-export const productIdSchema = object({
+export const marketIdSchema = object({
   query: object({
-    id: string().uuid().required(),
+    market_id: string().uuid().required(),
   }),
 });
-
-export type MarketIdDto = InferType<typeof marketIdSchema>["query"];
-export type ProductUpdateDto = InferType<typeof productUpdateSchema>["body"];
 export type ProductIdDto = InferType<typeof productIdSchema>["query"];
+export type ProductDto = InferType<typeof productSchema>["body"];
+export type ProductUpdateDto = InferType<typeof productUpdateSchema>["body"];
+export type MarketIdDto = InferType<typeof marketIdSchema>["query"];

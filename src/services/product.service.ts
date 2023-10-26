@@ -53,6 +53,7 @@ export async function getProductPricesByMarket(marketId: string) {
     },
     distinct: ["product_id"],
     select: {
+      id: true,
       price_value: true,
       price_date: true,
       product: {
@@ -61,6 +62,30 @@ export async function getProductPricesByMarket(marketId: string) {
           name: true,
         },
       },
+    },
+  });
+}
+
+export async function updateProductPriceById(
+  id: string,
+  price_value: number,
+  user_id: string
+) {
+  const priceInfo = await prisma.price.findUnique({
+    where: { id: id },
+  });
+
+  if (!priceInfo) {
+    throw new Error("Price with this id do not exists");
+  }
+
+  await prisma.price.create({
+    data: {
+      market_id: priceInfo.market_id,
+      product_id: priceInfo.product_id,
+      price_value: price_value,
+      price_date: new Date(),
+      user_id: user_id,
     },
   });
 }

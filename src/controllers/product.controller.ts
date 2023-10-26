@@ -4,8 +4,10 @@ import {
   getLastPrices,
   getProductPricesByMarket,
   getProductsByMarket,
+  updateProductPriceById,
 } from "../services/product.service";
-import { isSameDay, parseISO } from "date-fns";
+import { isSameDay } from "date-fns";
+import { ProductUpdateDto } from "../validation/product.schema";
 
 export async function getProducts(req: Request, res: Response) {
   const marketId = (req.query as MarketIdDto).market_id;
@@ -43,8 +45,8 @@ export async function getProductPrices(req: Request, res: Response) {
           (item) => !isSameDay(new Date(item.price_date.toString()), today)
         )
         .map((item) => ({
-          id: item.product.id,
           name: item.product.name,
+          price_id: item.id,
           price_value: item.price_value,
           updated_at: item.price_date,
         }));
@@ -53,5 +55,17 @@ export async function getProductPrices(req: Request, res: Response) {
     }
   } catch (error) {
     res.status(500).json({ error: "Error fetching prices" });
+  }
+}
+
+export async function updateProductPrice(req: Request, res: Response) {
+  const { id, price_value, user_id } = req.body as ProductUpdateDto;
+  try {
+    const updatedPrice = updateProductPriceById(id, price_value, user_id);
+    if (updatedPrice) {
+      res.status(200).json(updateProductPrice);
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error updating product price" });
   }
 }

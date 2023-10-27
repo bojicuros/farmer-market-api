@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { MarketIdDto } from "../validation/price.schema";
 import {
+  addProduct,
   deleteProductById,
   getLastPrices,
   getProductPricesByMarket,
@@ -10,9 +11,10 @@ import {
 } from "../services/product.service";
 import { isSameDay } from "date-fns";
 import {
-  ProductDto,
+  AddProductDto,
   ProductIdDto,
   ProductUpdateDto,
+  UpdateProductDto,
 } from "../validation/product.schema";
 
 export async function getProducts(req: Request, res: Response) {
@@ -64,8 +66,27 @@ export async function getProductPrices(req: Request, res: Response) {
   }
 }
 
+export async function addNewProduct(req: Request, res: Response) {
+  console.log("here");
+  console.log(req.body);
+  const { name, description, unit_of_measurement } = req.body as AddProductDto;
+  try {
+    const addedProduct = await addProduct(
+      name,
+      description,
+      unit_of_measurement
+    );
+    if (addedProduct) {
+      res.status(200).json(addedProduct);
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Error adding product" });
+  }
+}
+
 export async function updateProduct(req: Request, res: Response) {
-  const { id, name, description, unit_of_measurement } = req.body as ProductDto;
+  const { id, name, description, unit_of_measurement } =
+    req.body as UpdateProductDto;
   try {
     const updatedProduct = await updateProductById(
       id,

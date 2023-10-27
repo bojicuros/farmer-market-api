@@ -6,7 +6,15 @@ export const productIdSchema = object({
   }),
 });
 
-export const productSchema = object({
+export const addProductSchema = object({
+  body: object({
+    name: string().required(),
+    description: string(),
+    unit_of_measurement: string().required(),
+  }),
+});
+
+export const updateProductSchema = object({
   body: object({
     id: string().uuid().required(),
     name: string(),
@@ -29,6 +37,7 @@ export const marketIdSchema = object({
   }),
 });
 export type ProductIdDto = InferType<typeof productIdSchema>["query"];
-export type ProductDto = InferType<typeof productSchema>["body"];
+export type AddProductDto = InferType<typeof addProductSchema>["body"];
+export type UpdateProductDto = InferType<typeof updateProductSchema>["body"];
 export type ProductUpdateDto = InferType<typeof productUpdateSchema>["body"];
 export type MarketIdDto = InferType<typeof marketIdSchema>["query"];

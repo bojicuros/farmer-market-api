@@ -66,6 +66,20 @@ export async function getProductPricesByMarket(marketId: string) {
   });
 }
 
+export async function addProduct(
+  name: string,
+  description: string,
+  unit_of_measurement: string
+) {
+  return await prisma.product.create({
+    data: {
+      name: name,
+      description: description,
+      unit_of_measurement: unit_of_measurement,
+    },
+  });
+}
+
 export async function updateProductById(
   id: string,
   name: string,

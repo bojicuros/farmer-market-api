@@ -104,7 +104,7 @@ export async function updateProductById(
   });
 }
 
-export async function updateProductPriceById(
+export async function addProductPriceById(
   id: string,
   price_value: number,
   user_id: string

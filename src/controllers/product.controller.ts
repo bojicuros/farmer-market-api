@@ -2,18 +2,18 @@ import { Request, Response } from "express";
 import { MarketIdDto } from "../validation/price.schema";
 import {
   addProduct,
+  addProductPriceById,
   deleteProductById,
   getLastPrices,
   getProductPricesByMarket,
   getProductsByMarket,
   updateProductById,
-  updateProductPriceById,
 } from "../services/product.service";
 import { isSameDay } from "date-fns";
 import {
   AddProductDto,
   ProductIdDto,
-  ProductUpdateDto,
+  ProductPriceAddDto,
   UpdateProductDto,
 } from "../validation/product.schema";
 
@@ -67,8 +67,6 @@ export async function getProductPrices(req: Request, res: Response) {
 }
 
 export async function addNewProduct(req: Request, res: Response) {
-  console.log("here");
-  console.log(req.body);
   const { name, description, unit_of_measurement } = req.body as AddProductDto;
   try {
     const addedProduct = await addProduct(
@@ -102,12 +100,12 @@ export async function updateProduct(req: Request, res: Response) {
   }
 }
 
-export async function updateProductPrice(req: Request, res: Response) {
-  const { id, price_value, user_id } = req.body as ProductUpdateDto;
+export async function addProductPrice(req: Request, res: Response) {
+  const { id, price_value, user_id } = req.body as ProductPriceAddDto;
   try {
-    const updatedPrice = updateProductPriceById(id, price_value, user_id);
+    const updatedPrice = await addProductPriceById(id, price_value, user_id);
     if (updatedPrice) {
-      res.status(200).json(updateProductPrice);
+      res.status(200).json(updatedPrice);
     }
   } catch (error) {
     res.status(500).json({ error: "Error updating product price" });
@@ -119,7 +117,7 @@ export async function deleteProduct(req: Request, res: Response) {
   try {
     const deletedProduct = deleteProductById(id);
     if (deletedProduct) {
-      res.status(200).json(updateProductPrice);
+      res.status(200).json(deletedProduct);
     }
   } catch (error) {
     res.status(500).json({ error: "Error while deleting product" });

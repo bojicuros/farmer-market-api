@@ -4,17 +4,17 @@ import {
   addProductSchema,
   marketIdSchema,
   productIdSchema,
-  productUpdateSchema,
+  productPriceAddSchema,
   updateProductSchema,
 } from "../validation/product.schema";
 import {
   addNewProduct,
+  addProductPrice,
   deleteProduct,
   getLatestPrices,
   getProductPrices,
   getProducts,
   updateProduct,
-  updateProductPrice,
 } from "../controllers/product.controller";
 
 const router = express.Router();
@@ -23,13 +23,13 @@ router.get("/get-products", validate(marketIdSchema), getProducts);
 router.get("/get-product-prices", validate(marketIdSchema), getProductPrices);
 router.get("/get-latest-prices", validate(marketIdSchema), getLatestPrices);
 router.post("/add-new-product", validate(addProductSchema), addNewProduct);
-router.post("/update-product", validate(updateProductSchema), updateProduct);
-router.post(
-  "/update-product-price",
-  validate(productUpdateSchema),
-  updateProductPrice
-);
+router.put("/update-product", validate(updateProductSchema), updateProduct);
 router.delete("/delete-product", validate(productIdSchema), deleteProduct);
+router.post(
+  "/add-product-price",
+  validate(productPriceAddSchema),
+  addProductPrice
+);
 
 const productRouter = router;
 export default productRouter;

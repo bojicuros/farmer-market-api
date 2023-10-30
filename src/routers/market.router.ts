@@ -2,6 +2,7 @@ import express from "express";
 import {
   createMarket,
   getAllMarkets,
+  getAllOpenMarkets,
   getMarketById,
   toggleMarketOpenStatus,
   updateMarket,
@@ -16,6 +17,7 @@ import {
 const router = express.Router();
 
 router.get("/get-all", getAllMarkets);
+router.get("/get-all-open", getAllOpenMarkets);
 router.get("/get-by-id", validate(marketIdSchema), getMarketById);
 router.post("/create", validate(marketCreateSchema), createMarket);
 router.put("/update-by-id", validate(marketUpdateSchema), updateMarket);

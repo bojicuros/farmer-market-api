@@ -2,6 +2,18 @@ import { prisma } from "../../src/utils/db.server";
 
 export async function getAll() {
   return prisma.market.findMany({
+    select: {
+      id: true,
+      name: true,
+      address: true,
+      is_open: true,
+      created_at: true,
+    },
+  });
+}
+
+export async function getAllOpen() {
+  return prisma.market.findMany({
     select: { id: true, name: true, image_url: true },
     where: { is_open: true },
   });

@@ -37,26 +37,12 @@ export async function login(req: Request, res: Response) {
       const passwordsMatch = await bcrypt.compare(password, user.password);
 
       if (passwordsMatch) {
-        const roles = user.UserRole.map((userRole) => ({
-          role: userRole.role.name,
-          isApproved: userRole.is_approved,
-        }));
-
-        const vendorRole = roles.find((role) => role.role === "Vendor");
-
-        const isVendorApproved = vendorRole ? vendorRole.isApproved : true;
-
-        const roleNames = roles.map((role) => role.role);
+        const roleNames = user.UserRole.map((userRole) => userRole.role.name);
 
         const accessToken = jwt.sign(
           {
             userId: user.id,
-            name: user.first_name + " " + user.last_name,
-            email: user.email,
             roles: roleNames,
-            is_approved: isVendorApproved,
-            is_confirmed: user.confirmed,
-            is_active: user.is_active,
           },
           config.tokenKey,
           {
@@ -156,26 +142,12 @@ export async function refreshAccessToken(req: Request, res: Response) {
     const user = session.user;
 
     if (user) {
-      const roles = user.UserRole.map((userRole) => ({
-        role: userRole.role.name,
-        isApproved: userRole.is_approved,
-      }));
-
-      const vendorRole = roles.find((role) => role.role === "Vendor");
-
-      const isVendorApproved = vendorRole ? vendorRole.isApproved : true;
-
-      const roleNames = roles.map((role) => role.role);
+      const roleNames = user.UserRole.map((userRole) => userRole.role.name);
 
       const accessToken = jwt.sign(
         {
           userId: user.id,
-          name: user.first_name + " " + user.last_name,
-          email: user.email,
           roles: roleNames,
-          is_approved: isVendorApproved,
-          is_confirmed: user.confirmed,
-          is_active: user.is_active,
         },
         config.tokenKey,
         {

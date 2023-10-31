@@ -26,7 +26,14 @@ export async function getUserById(req: Request, res: Response) {
   try {
     const user = await getById(userId);
     if (user) {
-      res.status(200).json(user);
+      res.status(200).json({
+        email: user.email,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        confirmed: user.confirmed,
+        is_active: user.is_active,
+        is_approved: user.UserRole.every((role) => role.is_approved === true),
+      });
     } else {
       res.status(404).json({ error: "User not found" });
     }

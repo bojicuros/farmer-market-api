@@ -9,6 +9,18 @@ export async function getAll() {
 export async function getById(userId: string) {
   return prisma.user.findUnique({
     where: { id: userId },
+    select: {
+      email: true,
+      first_name: true,
+      last_name: true,
+      confirmed: true,
+      is_active: true,
+      UserRole: {
+        select: {
+          is_approved: true,
+        },
+      },
+    },
   });
 }
 

@@ -1,10 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { getById } from "../services/user.service";
+import { getUser } from "../services/auth.service";
 
 const validRoles = ["Admin", "Vendor"];
 
 export const authorize = (roles: string[]) => {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
     const rolesAreValid = roles.every((role) => validRoles.includes(role));
 
     if (!rolesAreValid) {
@@ -19,9 +21,8 @@ export const authorize = (roles: string[]) => {
 
     try {
       const decodedToken: any = jwt.verify(token, process.env.TOKEN_KEY);
-      const userRoles = decodedToken.roles;
-
-      const hasRequiredRole = userRoles.some((userRole: any) =>
+      const userRoles = decodedToken.roles as string[];
+      const hasRequiredRole = userRoles.some((userRole: string) =>
         roles.includes(userRole)
       );
 
@@ -29,8 +30,12 @@ export const authorize = (roles: string[]) => {
         return res.status(403).json({ message: "Unauthorized" });
       }
 
-      if (roles.includes("Vendor")) {
-        const isVendorApproved = decodedToken.is_approved;
+      if (userRoles.includes("Vendor")) {
+        const user = await getById(decodedToken);
+        const userInfo = await getUser(user.email);
+        const isVendorApproved = userInfo.UserRole.every(
+          (role) => role.is_approved === true
+        );
 
         if (!isVendorApproved) {
           return res.status(403).json({ message: "Vendor not approved yet" });

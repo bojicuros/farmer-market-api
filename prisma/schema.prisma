@@ -23,7 +23,6 @@ model User {
   is_active    Boolean  @default(true)
 
   UserRole          UserRole[]
-  Price             Price[]
   UserMarket        UserMarket[]
   UserSession       UserSession[]
   confirmationToken ConfirmationToken?
@@ -51,8 +50,8 @@ model UserSession {
   id            String   @id @default(uuid())
   user_id       String
   refresh_token String   @unique
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
 
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
@@ -61,14 +60,11 @@ model Market {
   id         String   @id @default(uuid())
   name       String
   address    String
-  lat        String?
-  lng        String?
   image_url  String
   is_open    Boolean  @default(true)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  prices     Price[]
   UserMarket UserMarket[]
 }
 
@@ -76,46 +72,53 @@ model UserMarket {
   user_id   String
   market_id String
 
-  user   User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  market Market @relation(fields: [market_id], references: [id], onDelete: Cascade)
+  user              User                @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  market            Market              @relation(fields: [market_id], references: [id], onDelete: Cascade)
+  UserMarketProduct UserMarketProduct[]
 
   @@id([user_id, market_id])
   @@unique([user_id, market_id])
 }
 
 model Product {
-  id                  String   @id @default(uuid())
-  name                String   @unique
-  description         String?
+  id                  String              @id @default(uuid())
+  name                String              @unique
   unit_of_measurement String
-  created_at          DateTime @default(now())
-  updated_at          DateTime @updatedAt
-
-  prices Price[]
+  created_at          DateTime            @default(now())
+  updated_at          DateTime            @updatedAt
+  UserMarketProduct   UserMarketProduct[]
 }
 
-model Price {
+model UserMarketProduct {
+  user_id    String
+  market_id  String
+  product_id String
+
+  userMarket UserMarket            @relation(fields: [user_id, market_id], references: [user_id, market_id])
+  product    Product               @relation(fields: [product_id], references: [id])
+  Price      ProductPriceHistory[]
+
+  @@id([user_id, market_id, product_id])
+}
+
+model ProductPriceHistory {
   id          String   @id @default(uuid())
-  market_id   String
-  product_id  String
-  price_date  DateTime
+  price_date  DateTime @default(now())
   price_value Float
-  user_id     String
 
-  market  Market  @relation(fields: [market_id], references: [id], onDelete: Cascade)
-  product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
-  user    User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
-
-  @@index([market_id, product_id, price_date])
+  user_id           String
+  market_id         String
+  product_id        String
+  UserMarketProduct UserMarketProduct @relation(fields: [user_id, market_id, product_id], references: [user_id, market_id, product_id])
 }
 
 model ConfirmationToken {
-  id              String    @id @default(uuid())
-  token           String    @unique
-  user_id         String    @unique
-  failed_attempts Int       @default(0)
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime? @updatedAt
+  id              String   @id @default(uuid())
+  token           String   @unique
+  user_id         String   @unique
+  failed_attempts Int      @default(0)
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
 
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }

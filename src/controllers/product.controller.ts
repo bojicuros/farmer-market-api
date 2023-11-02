@@ -1,114 +1,68 @@
 import { Request, Response } from "express";
-import { MarketIdDto } from "../validation/price.schema";
 import {
   addProduct,
-  addProductPriceById,
+  addUsersProducts,
   deleteProductById,
-  getLastPrices,
-  getProductPricesByMarket,
-  getProductsByMarket,
+  deleteUsersProducts,
+  getProducts,
+  getProductsNotSoldByUser,
+  getUserProducts,
   updateProductById,
 } from "../services/product.service";
-import { isSameDay } from "date-fns";
 import {
   AddProductDto,
   ProductIdDto,
-  ProductPriceAddDto,
   UpdateProductDto,
+  UserIdDto,
+  UserProductAddDto,
+  UserProductDeleteDto,
 } from "../validation/product.schema";
 
-export async function getProducts(req: Request, res: Response) {
-  const marketId = (req.query as MarketIdDto).market_id;
+export async function getAllProducts(_: Request, res: Response) {
   try {
-    const products = await getProductsByMarket(marketId);
-    if (products) {
-      const productList = products.map((item) => item.product);
-      res.status(200).json(productList);
-    }
+    const allProducts = await getProducts();
+    res.status(200).json(allProducts);
   } catch (error) {
-    res.status(500).json({ error: "Error fetching prices" });
-  }
-}
-
-export async function getLatestPrices(req: Request, res: Response) {
-  const marketId = (req.query as MarketIdDto).market_id;
-  try {
-    const prices = await getLastPrices(marketId);
-    if (prices) {
-      res.status(200).json(prices);
-    }
-  } catch (error) {
-    res.status(500).json({ error: "Error fetching prices" });
-  }
-}
-
-export async function getProductPrices(req: Request, res: Response) {
-  const marketId = (req.query as MarketIdDto).market_id;
-  try {
-    const productPrices = await getProductPricesByMarket(marketId);
-    if (productPrices) {
-      const today = new Date();
-      const detailedProductPrices = productPrices
-        .filter(
-          (item) => !isSameDay(new Date(item.price_date.toString()), today)
-        )
-        .map((item) => ({
-          name: item.product.name,
-          price_id: item.id,
-          price_value: item.price_value,
-          updated_at: item.price_date,
-        }));
-
-      res.status(200).json(detailedProductPrices);
-    }
-  } catch (error) {
-    res.status(500).json({ error: "Error fetching prices" });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error fetching all products",
+    });
   }
 }
 
 export async function addNewProduct(req: Request, res: Response) {
-  const { name, description, unit_of_measurement } = req.body as AddProductDto;
+  const { name, unit_of_measurement } = req.body as AddProductDto;
   try {
-    const addedProduct = await addProduct(
-      name,
-      description,
-      unit_of_measurement
-    );
-    if (addedProduct) {
-      res.status(200).json(addedProduct);
-    }
+    const addedProduct = await addProduct(name, unit_of_measurement);
+    res.status(201).json(addedProduct);
   } catch (error) {
-    res.status(500).json({ error: "Error adding product" });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error adding a new product",
+    });
   }
 }
 
 export async function updateProduct(req: Request, res: Response) {
-  const { id, name, description, unit_of_measurement } =
-    req.body as UpdateProductDto;
+  const { id, name, unit_of_measurement } = req.body as UpdateProductDto;
   try {
     const updatedProduct = await updateProductById(
       id,
       name,
-      description,
       unit_of_measurement
     );
     if (updatedProduct) {
       res.status(200).json(updatedProduct);
+    } else {
+      res
+        .status(404)
+        .json({ error: "Not Found", message: "Product not found" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error updating product price" });
-  }
-}
-
-export async function addProductPrice(req: Request, res: Response) {
-  const { id, price_value, user_id } = req.body as ProductPriceAddDto;
-  try {
-    const updatedPrice = await addProductPriceById(id, price_value, user_id);
-    if (updatedPrice) {
-      res.status(200).json(updatedPrice);
-    }
-  } catch (error) {
-    res.status(500).json({ error: "Error updating product price" });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error updating the product",
+    });
   }
 }
 
@@ -117,9 +71,85 @@ export async function deleteProduct(req: Request, res: Response) {
   try {
     const deletedProduct = deleteProductById(id);
     if (deletedProduct) {
-      res.status(200).json(deletedProduct);
+      res.status(204).json(deletedProduct);
+    } else {
+      res
+        .status(404)
+        .json({ error: "Not Found", message: "Product not found" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error while deleting product" });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error deleting the product",
+    });
+  }
+}
+
+export async function getUsersProducts(req: Request, res: Response) {
+  const userId = (req.query as UserIdDto).user_id;
+  try {
+    const products = await getUserProducts(userId);
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error fetching products by market",
+    });
+  }
+}
+
+export async function getProductsNotAssociatedWithUser(
+  req: Request,
+  res: Response
+) {
+  const userId = (req.query as UserIdDto).user_id;
+  try {
+    const products = await getProductsNotSoldByUser(userId);
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error fetching products not associated with the user",
+    });
+  }
+}
+
+export async function addUserProducts(req: Request, res: Response) {
+  const { user_id, market_id, product_ids } = req.body as UserProductAddDto;
+  try {
+    const addedProduct = await addUsersProducts(
+      user_id,
+      market_id,
+      product_ids
+    );
+    res.status(201).json(addedProduct);
+  } catch (error) {
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error adding user products",
+    });
+  }
+}
+
+export async function deleteUserProducts(req: Request, res: Response) {
+  const { user_id, market_id, product_ids } = req.body as UserProductDeleteDto;
+  try {
+    const deletedProducts = deleteUsersProducts(
+      user_id,
+      market_id,
+      product_ids
+    );
+    if (deletedProducts) {
+      res.status(204).json(deletedProducts);
+    } else {
+      res
+        .status(404)
+        .json({ error: "Not Found", message: "Product not found" });
+    }
+  } catch (error) {
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error deleting user products",
+    });
   }
 }

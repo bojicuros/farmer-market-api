@@ -1,37 +1,14 @@
+import { UserMarketProduct } from "@prisma/client";
 import { prisma } from "../../src/utils/db.server";
 
-export async function getProductsByMarket(marketId: string) {
-  return await prisma.price.findMany({
-    where: {
-      market_id: marketId,
-    },
-    distinct: ["product_id"],
-    select: {
-      product: {
-        select: {
-          id: true,
-          name: true,
-          description: true,
-          created_at: true,
-          unit_of_measurement: true,
-        },
-      },
-    },
-  });
+export async function getProducts() {
+  return await prisma.product.findMany({});
 }
 
-export async function getLastPrices(marketId: string) {
-  return await prisma.price.findMany({
-    where: {
-      market_id: marketId,
-    },
-    orderBy: {
-      price_date: "desc",
-    },
-    distinct: ["product_id"],
-    select: {
-      price_value: true,
-      price_date: true,
+export async function getUserProducts(userId: string) {
+  const userMarketProducts = await prisma.userMarketProduct.findMany({
+    where: { user_id: userId },
+    include: {
       product: {
         select: {
           id: true,
@@ -41,40 +18,41 @@ export async function getLastPrices(marketId: string) {
       },
     },
   });
+
+  const productList = userMarketProducts.map((item) => item.product);
+  return productList;
 }
 
-export async function getProductPricesByMarket(marketId: string) {
-  return await prisma.price.findMany({
+export async function getProductsNotSoldByUser(userId: string) {
+  const productsSoldByUser = await prisma.userMarketProduct.findMany({
+    where: { user_id: userId },
+    select: {
+      product_id: true,
+    },
+  });
+
+  const productIdsSoldByUser = productsSoldByUser.map(
+    (product) => product.product_id
+  );
+
+  return await prisma.product.findMany({
     where: {
-      market_id: marketId,
+      NOT: {
+        id: { in: productIdsSoldByUser },
+      },
     },
-    orderBy: {
-      price_date: "desc",
-    },
-    distinct: ["product_id"],
     select: {
       id: true,
-      price_value: true,
-      price_date: true,
-      product: {
-        select: {
-          id: true,
-          name: true,
-        },
-      },
+      name: true,
+      unit_of_measurement: true,
     },
   });
 }
 
-export async function addProduct(
-  name: string,
-  description: string,
-  unit_of_measurement: string
-) {
+export async function addProduct(name: string, unit_of_measurement: string) {
   return await prisma.product.create({
     data: {
       name: name,
-      description: description,
       unit_of_measurement: unit_of_measurement,
     },
   });
@@ -83,7 +61,6 @@ export async function addProduct(
 export async function updateProductById(
   id: string,
   name: string,
-  description: string,
   unit_of_measurement: string
 ) {
   const product = await prisma.product.findUnique({
@@ -98,32 +75,7 @@ export async function updateProductById(
     where: { id: product.id },
     data: {
       name: name,
-      description: description,
       unit_of_measurement: unit_of_measurement,
-    },
-  });
-}
-
-export async function addProductPriceById(
-  id: string,
-  price_value: number,
-  user_id: string
-) {
-  const priceInfo = await prisma.price.findUnique({
-    where: { id: id },
-  });
-
-  if (!priceInfo) {
-    throw new Error("Price with this id do not exists");
-  }
-
-  return await prisma.price.create({
-    data: {
-      market_id: priceInfo.market_id,
-      product_id: priceInfo.product_id,
-      price_value: price_value,
-      price_date: new Date(),
-      user_id: user_id,
     },
   });
 }
@@ -138,5 +90,49 @@ export async function deleteProductById(id: string) {
   }
   await prisma.product.delete({
     where: { id: product.id },
+  });
+}
+
+export async function addUsersProducts(
+  user_id: string,
+  market_id: string,
+  product_ids: string[]
+) {
+  const recordsToAdd = product_ids.map((product_id) => ({
+    user_id,
+    market_id,
+    product_id,
+  }));
+
+  const addedRecords = await prisma.userMarketProduct.createMany({
+    data: recordsToAdd,
+  });
+
+  return addedRecords;
+}
+
+export async function deleteUsersProducts(
+  user_id: string,
+  market_id: string,
+  product_ids: string[]
+) {
+  await prisma.productPriceHistory.deleteMany({
+    where: {
+      user_id: user_id,
+      market_id: market_id,
+      product_id: {
+        in: product_ids,
+      },
+    },
+  });
+
+  return await prisma.userMarketProduct.deleteMany({
+    where: {
+      user_id,
+      market_id,
+      product_id: {
+        in: product_ids,
+      },
+    },
   });
 }

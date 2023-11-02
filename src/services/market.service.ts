@@ -26,8 +26,6 @@ export async function getById(marketId: string) {
       image_url: true,
       address: true,
       is_open: true,
-      lat: true,
-      lng: true,
     },
     where: { id: marketId },
   });

@@ -14,7 +14,8 @@ async function hashPasswords(users) {
 
 async function seed() {
   try {
-    await prisma.price.deleteMany();
+    await prisma.productPriceHistory.deleteMany();
+    await prisma.userMarketProduct.deleteMany();
     await prisma.userMarket.deleteMany();
     await prisma.userRole.deleteMany();
     await prisma.user.deleteMany();
@@ -22,16 +23,20 @@ async function seed() {
     await prisma.market.deleteMany();
     await prisma.product.deleteMany();
 
+    const hashedUsers = await hashPasswords(seedData.users);
+
     await prisma.role.createMany({ data: seedData.roles });
-
-    const hashedUsers = await hashPasswords(seedData.users); // Hash passwords
-
-    await prisma.user.createMany({ data: hashedUsers }); // Insert hashed users
+    await prisma.user.createMany({ data: hashedUsers });
     await prisma.userRole.createMany({ data: seedData.userRoles });
     await prisma.market.createMany({ data: seedData.markets });
     await prisma.userMarket.createMany({ data: seedData.userMarket });
     await prisma.product.createMany({ data: seedData.products });
-    await prisma.price.createMany({ data: seedData.prices });
+    await prisma.userMarketProduct.createMany({
+      data: seedData.userMarketProduct,
+    });
+    await prisma.productPriceHistory.createMany({
+      data: seedData.productPriceHistory,
+    });
 
     console.log("Seeding completed successfully!");
   } catch (error) {

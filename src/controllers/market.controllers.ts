@@ -18,7 +18,10 @@ export async function getAllMarkets(_, res: Response) {
     const markets = await getAll();
     res.status(200).json(markets);
   } catch (error) {
-    res.status(500).json({ error: "Error fetching markets" });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error fetching markets",
+    });
   }
 }
 
@@ -27,7 +30,10 @@ export async function getAllOpenMarkets(_, res: Response) {
     const markets = await getAllOpen();
     res.status(200).json(markets);
   } catch (error) {
-    res.status(500).json({ error: "Error fetching markets" });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error fetching open markets",
+    });
   }
 }
 
@@ -38,10 +44,13 @@ export async function getMarketById(req: Request, res: Response) {
     if (market) {
       res.status(200).json(market);
     } else {
-      res.status(404).json({ error: "Market not found" });
+      res.status(404).json({ error: "Not Found", message: "Market not found" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error fetching market" });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error fetching market",
+    });
   }
 }
 
@@ -49,11 +58,12 @@ export async function createMarket(req: Request, res: Response) {
   const market = req.body as MarketDto;
   try {
     const createdMarket = await create(market);
-    if (createdMarket) {
-      res.status(200).json(createdMarket);
-    }
+    if (createdMarket) res.status(201).json(createdMarket);
   } catch (error) {
-    res.status(500).json({ error: "Error creating market" });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error creating market",
+    });
   }
 }
 
@@ -65,7 +75,10 @@ export async function updateMarket(req: Request, res: Response) {
       res.status(200).json(updatedMarket);
     }
   } catch (error) {
-    res.status(500).json({ error: "Error creating market" });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error updating market",
+    });
   }
 }
 
@@ -76,9 +89,12 @@ export async function toggleMarketOpenStatus(req: Request, res: Response) {
     if (market) {
       res.status(200).json({ message: "Successfully changed" });
     } else {
-      res.status(404).json({ error: "Market not found" });
+      res.status(404).json({ error: "Not Found", message: "Market not found" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error fetching market" });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error toggling market open status",
+    });
   }
 }

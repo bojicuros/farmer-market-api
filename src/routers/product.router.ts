@@ -2,33 +2,44 @@ import express from "express";
 import { validate } from "../middleware/validation.middleware";
 import {
   addProductSchema,
-  marketIdSchema,
+  userIdSchema,
   productIdSchema,
-  productPriceAddSchema,
   updateProductSchema,
+  userProductAddSchema,
+  userProductDeleteSchema,
 } from "../validation/product.schema";
 import {
   addNewProduct,
-  addProductPrice,
+  addUserProducts,
   deleteProduct,
-  getLatestPrices,
-  getProductPrices,
-  getProducts,
+  deleteUserProducts,
+  getAllProducts,
+  getProductsNotAssociatedWithUser,
+  getUsersProducts,
   updateProduct,
 } from "../controllers/product.controller";
 
 const router = express.Router();
 
-router.get("/get-products", validate(marketIdSchema), getProducts);
-router.get("/get-product-prices", validate(marketIdSchema), getProductPrices);
-router.get("/get-latest-prices", validate(marketIdSchema), getLatestPrices);
+router.get("/get-all-products", getAllProducts);
 router.post("/add-new-product", validate(addProductSchema), addNewProduct);
 router.put("/update-product", validate(updateProductSchema), updateProduct);
 router.delete("/delete-product", validate(productIdSchema), deleteProduct);
+router.get("/get-users-products", validate(userIdSchema), getUsersProducts);
+router.get(
+  "/get-products-not-associated-with-user",
+  validate(userIdSchema),
+  getProductsNotAssociatedWithUser
+);
 router.post(
-  "/add-product-price",
-  validate(productPriceAddSchema),
-  addProductPrice
+  "/add-user-products",
+  validate(userProductAddSchema),
+  addUserProducts
+);
+router.delete(
+  "/delete-user-products",
+  validate(userProductDeleteSchema),
+  deleteUserProducts
 );
 
 const productRouter = router;

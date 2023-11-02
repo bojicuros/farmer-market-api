@@ -71,22 +71,19 @@ export async function deleteById(userId: string) {
   });
 }
 
-export async function getMarketByVendor(userId: string) {
+export async function approveById(userId: string) {
   const existingUser = await getById(userId);
 
   if (!existingUser) {
     throw new Error("User with that id is not found");
   }
-  return await prisma.user.findUnique({
+
+  return prisma.userRole.updateMany({
     where: {
-      id: userId,
+      user_id: userId,
     },
-    include: {
-      UserMarket: {
-        select: {
-          market_id: true,
-        },
-      },
+    data: {
+      is_approved: true,
     },
   });
 }

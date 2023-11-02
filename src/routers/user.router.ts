@@ -6,7 +6,7 @@ import {
   updateUser,
   deleteUser,
   getAllUnapprovedUsers,
-  getMarket,
+  approveUser,
 } from "../controllers/user.controller";
 import { validate } from "../middleware/validation.middleware";
 import {
@@ -20,10 +20,10 @@ const router = express.Router();
 router.get("/get-all", getAllUsers);
 router.get("/get-by-id", validate(userIdSchema), getUserById);
 router.get("/get-all-unapproved", getAllUnapprovedUsers);
-router.get("/get-vendors-market", validate(userIdSchema), getMarket);
 router.post("/create", validate(userCreateSchema), createUser);
 router.put("/update", validate(userUpdateSchema), updateUser);
 router.delete("/delete", validate(userIdSchema), deleteUser);
+router.put("/approve", validate(userIdSchema), approveUser);
 
 const userRouter = router;
 export default userRouter;

@@ -58,13 +58,17 @@ export async function login(req: Request, res: Response) {
           .status(200)
           .json({ accessToken: accessToken, refreshToken: refreshToken });
       } else {
-        res.status(401).json({ error: "Passwords do not match" });
+        res
+          .status(401)
+          .json({ error: "Unauthorized", message: "Passwords do not match" });
       }
     } else {
-      res.status(404).json({ error: "User not found" });
+      res.status(404).json({ error: "Not Found", message: "User not found" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error fetching user" });
+    res
+      .status(500)
+      .json({ error: "Internal Server Error", message: "Error fetching user" });
   }
 }
 
@@ -75,7 +79,9 @@ export async function register(req: Request, res: Response) {
     const existingUser = await getUser(body.email);
 
     if (existingUser) {
-      res.status(409).json({ error: "User already exists" });
+      res
+        .status(409)
+        .json({ error: "Conflict", message: "User already exists" });
       return;
     }
 
@@ -95,7 +101,10 @@ export async function register(req: Request, res: Response) {
       phone_number: newUser.phone_number,
     });
   } catch (error) {
-    res.status(500).json({ error: "Error registering user" });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error registering user",
+    });
   }
 }
 
@@ -111,10 +120,18 @@ export async function requireConfirmationToken(req: Request, res: Response) {
 
       sendConfirmationEmail(user.email, secretToken);
 
-      res.json("Code sent");
+      res.status(200).json({ message: "Confirmation token sent" });
+    } else {
+      res.status(404).json({
+        error: "Not Found",
+        message: "User not found. Cannot send confirmation token.",
+      });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error sending confirmation token" });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error sending confirmation token",
+    });
   }
 }
 
@@ -157,10 +174,15 @@ export async function refreshAccessToken(req: Request, res: Response) {
 
       res.status(200).json({ accessToken });
     } else {
-      res.status(401).json({ error: "Invalid refresh token" });
+      res
+        .status(401)
+        .json({ error: "Unauthorized", message: "Invalid refresh token" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error refreshing token" });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error refreshing token",
+    });
   }
 }
 
@@ -172,18 +194,25 @@ export async function confirmEmailToken(req: Request, res: Response) {
 
     if (isTokenValid) {
       rightConfirmationToken(user_id);
-      return res.status(200).json({ message: "Successfully confirmed" });
+      return res.status(200).json({ message: "Email successfully confirmed" });
     }
 
-    const wrongToken = wrongConfirmationToken(user_id);
-    if ((await wrongToken).failed_attempts === MAX_FAILED_ATTEMPTS_EMAIL)
+    const wrongToken = await wrongConfirmationToken(user_id);
+    if (wrongToken.failed_attempts === MAX_FAILED_ATTEMPTS_EMAIL) {
       return res.status(401).json({
-        error:
-          "You have react maximal number of attempts. Your profile is now deleted",
+        error: "Unauthorized",
+        message: "Max failed attempts reached. Your profile is now deleted",
       });
-    res.status(401).json({ error: "Invalid confirmation token" });
+    }
+
+    res
+      .status(401)
+      .json({ error: "Unauthorized", message: "Invalid confirmation token" });
   } catch (error) {
-    res.status(500).json({ error: "Error confirmation token" });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error confirming email token",
+    });
   }
 }
 
@@ -201,7 +230,10 @@ export async function forgotPassword(req: Request, res: Response) {
 
     res.status(201).json({ message: "Email sent" });
   } catch (error) {
-    res.status(500).json({ error: "Error registering user" });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error sending email for password reset",
+    });
   }
 }
 
@@ -211,9 +243,12 @@ export async function emailAvailable(req: Request, res: Response) {
   try {
     const user = await getUser(email);
 
-    res.status(200).json({ available: user ? false : true });
+    res.status(200).json({ available: !user });
   } catch (error) {
-    res.status(500).json({ error: "Error checking email" });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error checking email availability",
+    });
   }
 }
 
@@ -225,12 +260,17 @@ export async function validateResetToken(req: Request, res: Response) {
     const isTokenValid = await bcrypt.compare(token, confirmationToken.token);
 
     if (isTokenValid) {
-      return res.status(201).json({ message: "Successfully validated token" });
+      return res.status(200).json({ message: "Successfully validated token" });
     }
 
-    res.status(401).json({ error: "Invalid confirmation token" });
+    res
+      .status(401)
+      .json({ error: "Unauthorized", message: "Invalid confirmation token" });
   } catch (error) {
-    res.status(500).json({ error: "Error confirmation token" });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error validating reset token",
+    });
   }
 }
 
@@ -247,8 +287,13 @@ export async function confirmPasswordToken(req: Request, res: Response) {
       return res.status(201).json({ message: "Successfully changed password" });
     }
 
-    res.status(401).json({ error: "Invalid confirmation token" });
+    res
+      .status(401)
+      .json({ error: "Unauthorized", message: "Invalid confirmation token" });
   } catch (error) {
-    res.status(500).json({ error: "Error confirmation token" });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error changing password",
+    });
   }
 }

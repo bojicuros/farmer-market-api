@@ -8,6 +8,9 @@ export async function searchHandler(req: Request, res: Response) {
     const results = await search(query);
     res.status(200).json(results);
   } catch (error) {
-    res.status(500).json({ error: "Error while searching" });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error while performing the search",
+    });
   }
 }

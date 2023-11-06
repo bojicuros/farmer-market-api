@@ -23,6 +23,16 @@
       "phone_number": "9876543210",
       "confirmed": true,
       "is_active": true
+    },
+    {
+      "id": "eebc6b68-fd3f-463e-a310-2b8ecc371345",
+      "email": "user3@example.com",
+      "password": "password3",
+      "first_name": "John",
+      "last_name": "Snow",
+      "phone_number": "1234567890",
+      "confirmed": true,
+      "is_active": true
     }
   ],
   "userRoles": [
@@ -37,8 +47,13 @@
       "is_approved": true
     },
     {
-      "role_id": "5fb10e5a-d14c-4579-afb5-904cf283a463",
+      "role_id": "664211ac-c22a-435f-a986-6594bf22d08c",
       "user_id": "ff89d5af-53ad-446b-ae7c-eb965571cf39",
+      "is_approved": true
+    },
+    {
+      "role_id": "5fb10e5a-d14c-4579-afb5-904cf283a463",
+      "user_id": "eebc6b68-fd3f-463e-a310-2b8ecc371345",
       "is_approved": false
     }
   ],
@@ -76,42 +91,42 @@
     {
       "id": "8077fdaf-028d-4379-b5ed-22bf500269a9",
       "name": "Apples",
-      "unit_of_measurement": "kilo"
+      "unit_of_measurement": "kilogram"
     },
     {
       "id": "8e866d8d-bf8a-456a-a08c-d2f571effbe6",
       "name": "Tomatoes",
-      "unit_of_measurement": "kilo"
+      "unit_of_measurement": "kilogram"
     },
     {
       "id": "3f92d6e3-9aeb-4af4-975a-ec5d2ac7bcb1",
       "name": "Bananas",
-      "unit_of_measurement": "bunch"
+      "unit_of_measurement": "piece"
     },
     {
       "id": "9c6ad657-52ea-4a47-94e3-1cf96b4f7b6e",
       "name": "Carrots",
-      "unit_of_measurement": "kilo"
+      "unit_of_measurement": "kilogram"
     },
     {
       "id": "30a8e3a8-c3c6-48ab-96c1-4b5708225562",
       "name": "Lettuce",
-      "unit_of_measurement": "head"
+      "unit_of_measurement": "piece"
     },
     {
       "id": "d1b4f935-11e1-48ab-b35b-0166f3e3b6ec",
       "name": "Oranges",
-      "unit_of_measurement": "kilo"
+      "unit_of_measurement": "kilogram"
     },
     {
       "id": "7c893a1d-d4f3-45f5-89f1-1c37a9f35595",
       "name": "Potatoes",
-      "unit_of_measurement": "kilo"
+      "unit_of_measurement": "kilogram"
     },
     {
       "id": "6e7e1d06-1e4e-4a43-9e27-1e139c8ea750",
       "name": "Strawberries",
-      "unit_of_measurement": "punnet"
+      "unit_of_measurement": "bag"
     },
     {
       "id": "fd9b3f88-992e-4aeb-9b07-2218f74ab76c",
@@ -121,7 +136,7 @@
     {
       "id": "1e3b3f3c-736b-4c0b-a0c8-9b3da87cf8f7",
       "name": "Grapes",
-      "unit_of_measurement": "kilo"
+      "unit_of_measurement": "kilogram"
     },
     {
       "id": "98a63c47-95a2-44e2-875b-2dbfba843e23",

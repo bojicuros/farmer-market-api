@@ -88,6 +88,11 @@ export async function deleteProductById(id: string) {
   if (!product) {
     throw new Error("Product with this id do not exists");
   }
+
+  await prisma.userMarketProduct.deleteMany({
+    where: { product_id: product.id },
+  });
+
   await prisma.product.delete({
     where: { id: product.id },
   });

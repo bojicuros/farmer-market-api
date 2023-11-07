@@ -23,7 +23,7 @@ import {
   ResetTokenDto,
 } from "../validation/auth.schema";
 import { randomBytes } from "crypto";
-import { sendEmail } from "../services/mail.service";
+import { sendConfirmationEmail } from "../services/mail.service";
 import { config } from "../utils/config";
 
 export const MAX_FAILED_ATTEMPTS_EMAIL = 3;
@@ -138,17 +138,6 @@ export async function requireConfirmationToken(req: Request, res: Response) {
 function generateConfirmationToken(): string {
   const token = Math.floor(100000 + Math.random() * 900000).toString();
   return token;
-}
-
-function sendConfirmationEmail(email: string, secretToken: string) {
-  const emailOptions = {
-    from: config.email,
-    to: email,
-    subject: "Email Confirmation",
-    text: `Here is your confirmation token: ${secretToken}`,
-  };
-
-  sendEmail(emailOptions);
 }
 
 export async function refreshAccessToken(req: Request, res: Response) {

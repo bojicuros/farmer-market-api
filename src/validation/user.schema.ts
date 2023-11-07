@@ -1,4 +1,4 @@
-import { InferType, boolean, object, string } from "yup";
+import { InferType, array, boolean, object, string } from "yup";
 
 export const userCreateSchema = object({
   body: object({
@@ -22,6 +22,17 @@ export const userUpdateSchema = object({
   }),
 });
 
+export const userInfoUpdateSchema = object({
+  body: object({
+    id: string().uuid().required(),
+    email: string().email(),
+    first_name: string(),
+    last_name: string(),
+    roles: array().of(string()).min(1),
+    markets: array().of(string()).min(1),
+  }),
+});
+
 export const userIdSchema = object({
   query: object({
     id: string().uuid().required(),
@@ -31,3 +42,4 @@ export const userIdSchema = object({
 export type UserCreateDto = InferType<typeof userCreateSchema>["body"];
 export type UserUpdateDto = InferType<typeof userUpdateSchema>["body"];
 export type UserIdDto = InferType<typeof userIdSchema>["query"];
+export type UserInfoUpdateDto = InferType<typeof userInfoUpdateSchema>["body"];

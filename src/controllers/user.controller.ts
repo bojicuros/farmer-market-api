@@ -1,28 +1,33 @@
 import { Request, Response } from "express";
 import {
-  getAll,
+  getAllApproved,
   getById,
   create,
   updateById,
   deleteById,
   getAllUnapproved,
   approveById,
+  toggleActive,
+  rejectById,
+  updateUserInfo,
 } from "../services/user.service";
 import { User } from "@prisma/client";
-import { UserIdDto, UserUpdateDto } from "../validation/user.schema";
+import {
+  UserIdDto,
+  UserInfoUpdateDto,
+  UserUpdateDto,
+} from "../validation/user.schema";
 import bcrypt from "bcrypt";
 
 export async function getAllUsers(_, res: Response) {
   try {
-    const users = await getAll();
+    const users = await getAllApproved();
     res.status(200).json(users);
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        error: "Internal Server Error",
-        message: "Error fetching users",
-      });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error fetching users",
+    });
   }
 }
 
@@ -54,12 +59,10 @@ export async function getAllUnapprovedUsers(_, res: Response) {
     const users = await getAllUnapproved();
     res.status(200).json(users);
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        error: "Internal Server Error",
-        message: "Error fetching unapproved users",
-      });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error fetching unapproved users",
+    });
   }
 }
 
@@ -90,6 +93,20 @@ export async function updateUser(req: Request, res: Response) {
   }
 }
 
+export async function updateUserInformation(req: Request, res: Response) {
+  const { id, email, first_name, last_name, roles, markets } =
+    req.body as UserInfoUpdateDto;
+  try {
+    await updateUserInfo(id, email, first_name, last_name, roles, markets);
+    res.status(200).json({ message: "Successful" });
+  } catch (error) {
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error updating user info",
+    });
+  }
+}
+
 export async function deleteUser(req: Request, res: Response) {
   const userId = (req.query as UserIdDto).id;
   try {
@@ -108,11 +125,35 @@ export async function approveUser(req: Request, res: Response) {
     await approveById(userId);
     res.status(200).json({ approved: true });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        error: "Internal Server Error",
-        message: "Failed to approve user",
-      });
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Failed to approve user",
+    });
+  }
+}
+
+export async function rejectUser(req: Request, res: Response) {
+  const userId = (req.query as UserIdDto).id;
+  try {
+    await rejectById(userId);
+    res.status(200).json({ approved: true });
+  } catch (error) {
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Failed to reject user",
+    });
+  }
+}
+
+export async function toggleActiveStatus(req: Request, res: Response) {
+  const userId = (req.query as UserIdDto).id;
+  try {
+    const updatedUser = await toggleActive(userId);
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Failed to toggle active status of user",
+    });
   }
 }

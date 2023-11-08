@@ -1,4 +1,3 @@
-import { UserMarketProduct } from "@prisma/client";
 import { prisma } from "../../src/utils/db.server";
 
 export async function getProducts() {
@@ -16,37 +15,83 @@ export async function getUserProducts(userId: string) {
           unit_of_measurement: true,
         },
       },
+      userMarket: {
+        include: {
+          market: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      },
+    },
+    orderBy: {
+      market_id: "asc",
     },
   });
 
-  const productList = userMarketProducts.map((item) => item.product);
+  const productList = userMarketProducts.map((item) => ({
+    id: item.product.id,
+    name: item.product.name,
+    unit_of_measurement: item.product.unit_of_measurement,
+    market: item.userMarket.market.name,
+    market_id: item.userMarket.market.id,
+  }));
+
   return productList;
 }
 
 export async function getProductsNotSoldByUser(userId: string) {
-  const productsSoldByUser = await prisma.userMarketProduct.findMany({
+  const userMarkets = await prisma.userMarket.findMany({
     where: { user_id: userId },
-    select: {
-      product_id: true,
-    },
+    select: { market_id: true, market: true },
   });
 
-  const productIdsSoldByUser = productsSoldByUser.map(
-    (product) => product.product_id
-  );
-
-  return await prisma.product.findMany({
-    where: {
-      NOT: {
-        id: { in: productIdsSoldByUser },
-      },
-    },
-    select: {
-      id: true,
-      name: true,
-      unit_of_measurement: true,
-    },
+  const userSellingProducts = await prisma.userMarketProduct.findMany({
+    where: { user_id: userId },
+    select: { market_id: true, product_id: true },
   });
+
+  const usersMarkets = userMarkets.map((market) => ({
+    market_id: market.market_id,
+    name: market.market.name,
+  }));
+
+  const productsUserIsSelling = userSellingProducts.map((userProduct) => ({
+    market_id: userProduct.market_id,
+    product_id: userProduct.product_id,
+  }));
+
+  const productsUserIsNotSelling = [];
+
+  for (const market of usersMarkets) {
+    const productsInMarket = await prisma.product.findMany();
+
+    const productsSellingInMarket = productsUserIsSelling.filter(
+      (userProduct) => userProduct.market_id === market.market_id
+    );
+
+    const productsNotSellingInMarket = productsInMarket.filter(
+      (product) =>
+        !productsSellingInMarket.some(
+          (userProduct) => userProduct.product_id === product.id
+        )
+    );
+
+    productsNotSellingInMarket.forEach((product) => {
+      const productWithMarketId = {
+        id: product.id,
+        name: product.name,
+        unit_of_measurement: product.unit_of_measurement,
+        market: market.name,
+        market_id: market.market_id,
+      };
+      productsUserIsNotSelling.push(productWithMarketId);
+    });
+  }
+
+  return productsUserIsNotSelling;
 }
 
 export async function addProduct(name: string, unit_of_measurement: string) {
@@ -101,16 +146,14 @@ export async function deleteProductById(id: string) {
 export async function addUsersProducts(
   user_id: string,
   market_id: string,
-  product_ids: string[]
+  product_id: string
 ) {
-  const recordsToAdd = product_ids.map((product_id) => ({
-    user_id,
-    market_id,
-    product_id,
-  }));
-
-  const addedRecords = await prisma.userMarketProduct.createMany({
-    data: recordsToAdd,
+  const addedRecords = await prisma.userMarketProduct.create({
+    data: {
+      user_id: user_id,
+      product_id: product_id,
+      market_id: market_id,
+    },
   });
 
   return addedRecords;
@@ -119,15 +162,13 @@ export async function addUsersProducts(
 export async function deleteUsersProducts(
   user_id: string,
   market_id: string,
-  product_ids: string[]
+  product_id: string
 ) {
   await prisma.productPriceHistory.deleteMany({
     where: {
       user_id: user_id,
       market_id: market_id,
-      product_id: {
-        in: product_ids,
-      },
+      product_id: product_id,
     },
   });
 
@@ -135,9 +176,7 @@ export async function deleteUsersProducts(
     where: {
       user_id,
       market_id,
-      product_id: {
-        in: product_ids,
-      },
+      product_id: product_id,
     },
   });
 }

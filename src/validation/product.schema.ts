@@ -31,15 +31,15 @@ export const userProductAddSchema = object({
   body: object({
     user_id: string().required().uuid(),
     market_id: string().required().uuid(),
-    product_ids: array().of(string().uuid()).min(1).required(),
+    product_id: string().required().uuid(),
   }),
 });
 
 export const userProductDeleteSchema = object({
-  body: object({
+  query: object({
     user_id: string().required().uuid(),
     market_id: string().required().uuid(),
-    product_ids: array().of(string().uuid()).min(1).required(),
+    product_id: string().required().uuid(),
   }),
 });
 
@@ -50,4 +50,4 @@ export type UserIdDto = InferType<typeof userIdSchema>["query"];
 export type UserProductAddDto = InferType<typeof userProductAddSchema>["body"];
 export type UserProductDeleteDto = InferType<
   typeof userProductDeleteSchema
->["body"];
+>["query"];

@@ -115,13 +115,9 @@ export async function getProductsNotAssociatedWithUser(
 }
 
 export async function addUserProducts(req: Request, res: Response) {
-  const { user_id, market_id, product_ids } = req.body as UserProductAddDto;
+  const { user_id, market_id, product_id } = req.body as UserProductAddDto;
   try {
-    const addedProduct = await addUsersProducts(
-      user_id,
-      market_id,
-      product_ids
-    );
+    const addedProduct = await addUsersProducts(user_id, market_id, product_id);
     res.status(201).json(addedProduct);
   } catch (error) {
     res.status(500).json({
@@ -132,13 +128,9 @@ export async function addUserProducts(req: Request, res: Response) {
 }
 
 export async function deleteUserProducts(req: Request, res: Response) {
-  const { user_id, market_id, product_ids } = req.body as UserProductDeleteDto;
+  const { user_id, market_id, product_id } = req.query as UserProductDeleteDto;
   try {
-    const deletedProducts = deleteUsersProducts(
-      user_id,
-      market_id,
-      product_ids
-    );
+    const deletedProducts = deleteUsersProducts(user_id, market_id, product_id);
     if (deletedProducts) {
       res.status(204).json(deletedProducts);
     } else {

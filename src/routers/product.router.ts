@@ -32,12 +32,12 @@ router.get(
   getProductsNotAssociatedWithUser
 );
 router.post(
-  "/add-user-products",
+  "/add-user-product",
   validate(userProductAddSchema),
   addUserProducts
 );
 router.delete(
-  "/delete-user-products",
+  "/delete-user-product",
   validate(userProductDeleteSchema),
   deleteUserProducts
 );

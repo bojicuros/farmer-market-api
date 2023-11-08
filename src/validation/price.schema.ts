@@ -35,6 +35,12 @@ export const priceIdSchema = object({
   }),
 });
 
+export const userIdSchema = object({
+  query: object({
+    user_id: string().uuid().required(),
+  }),
+});
+
 export type MarketIdDto = InferType<typeof marketIdSchema>["query"];
 export type PricePerDayDto = InferType<typeof pricePerDaySchema>["body"];
 export type AddProductPriceDto = InferType<
@@ -44,3 +50,4 @@ export type UpdateProductPriceDto = InferType<
   typeof updateProductPriceSchema
 >["body"];
 export type PriceIdDto = InferType<typeof priceIdSchema>["query"];
+export type UserIdDto = InferType<typeof userIdSchema>["query"];

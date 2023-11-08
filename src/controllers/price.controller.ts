@@ -2,8 +2,10 @@ import { Request, Response } from "express";
 import {
   addPriceOfProduct,
   deletePrice,
-  getPricesForCurtainDay,
+  getPricesForCertainDay,
   getPricesForToday,
+  getUserMarketProductsWithoutPriceToday,
+  getUserPricesForToday,
   updatePriceOfProduct,
 } from "../services/price.service";
 import {
@@ -12,6 +14,7 @@ import {
   PriceIdDto,
   PricePerDayDto,
   UpdateProductPriceDto,
+  UserIdDto,
 } from "../validation/price.schema";
 
 export async function getTodaysPrices(req: Request, res: Response) {
@@ -37,7 +40,50 @@ export async function getTodaysPrices(req: Request, res: Response) {
 export async function getPriceForDate(req: Request, res: Response) {
   const { date, market_id } = req.body as PricePerDayDto;
   try {
-    const prices = await getPricesForCurtainDay(date, market_id);
+    const prices = await getPricesForCertainDay(date, market_id);
+    if (prices) {
+      res.status(200).json(prices);
+    } else {
+      res.status(404).json({
+        error: "Not Found",
+        message: "No prices found for today",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error while performing the search",
+    });
+  }
+}
+
+export async function getTodaysUsersPrices(req: Request, res: Response) {
+  const userId = (req.query as UserIdDto).user_id;
+  try {
+    const prices = await getUserPricesForToday(userId);
+    if (prices) {
+      res.status(200).json(prices);
+    } else {
+      res.status(404).json({
+        error: "Not Found",
+        message: "No prices found for today",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error while performing the search",
+    });
+  }
+}
+
+export async function getUsersProductWithoutTodaysPrice(
+  req: Request,
+  res: Response
+) {
+  const userId = (req.query as UserIdDto).user_id;
+  try {
+    const prices = await getUserMarketProductsWithoutPriceToday(userId);
     if (prices) {
       res.status(200).json(prices);
     } else {

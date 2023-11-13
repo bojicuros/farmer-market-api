@@ -10,6 +10,7 @@ import {
   toggleActiveStatus,
   rejectUser,
   updateUserInformation,
+  addUserMarkets,
 } from "../controllers/user.controller";
 import { validate } from "../middleware/validation.middleware";
 import {
@@ -17,6 +18,7 @@ import {
   userUpdateSchema,
   userIdSchema,
   userInfoUpdateSchema,
+  marketsIdSchema,
 } from "../validation/user.schema";
 
 const router = express.Router();
@@ -31,6 +33,7 @@ router.post(
   validate(userInfoUpdateSchema),
   updateUserInformation
 );
+router.post("/add-markets-to-user", validate(marketsIdSchema), addUserMarkets);
 router.delete("/delete", validate(userIdSchema), deleteUser);
 router.put("/approve", validate(userIdSchema), approveUser);
 router.put("/reject", validate(userIdSchema), rejectUser);

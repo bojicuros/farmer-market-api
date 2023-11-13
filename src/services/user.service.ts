@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { User } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
 import { prisma } from "../../src/utils/db.server";
 import {
   sendApprovalEmail,
@@ -80,9 +80,9 @@ export async function getAllUnapproved() {
       last_name: true,
       email: true,
       created_at: true,
-      UserMarket: {
+      UserRole: {
         select: {
-          market: {
+          role: {
             select: {
               name: true,
             },
@@ -105,7 +105,7 @@ export async function getAllUnapproved() {
       name: user.first_name + " " + user.last_name,
       email: user.email,
       date: user.created_at,
-      markets: user.UserMarket.map((userMarket) => userMarket.market.name),
+      role: user.UserRole.map((userRole) => userRole.role.name),
     };
   });
 }
@@ -337,4 +337,36 @@ export async function toggleActive(userId: string) {
       is_active: true,
     },
   });
+}
+
+export async function addMarketToUser(userId: string, marketNames: string[]) {
+  const existingUser = await getById(userId);
+
+  if (!existingUser) {
+    throw new Error("User with that id is not found");
+  }
+
+  const markets = await prisma.market.findMany({
+    where: {
+      name: {
+        in: marketNames,
+      },
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  const userMarketRecords: Prisma.UserMarketCreateManyInput[] = markets.map(
+    (market) => ({
+      user_id: userId,
+      market_id: market.id,
+    })
+  );
+
+  const createdUserMarkets = await prisma.userMarket.createMany({
+    data: userMarketRecords,
+  });
+
+  return createdUserMarkets;
 }

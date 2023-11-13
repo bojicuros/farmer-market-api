@@ -1,4 +1,4 @@
-import { object, string, InferType } from "yup";
+import { object, string, InferType, boolean } from "yup";
 
 export const loginSchema = object({
   body: object({
@@ -14,6 +14,8 @@ export const registerSchema = object({
     last_name: string().required(),
     password: string().min(8).required(),
     phone_number: string(),
+    is_admin: boolean().required(),
+    is_vendor: boolean().required(),
   }),
 });
 

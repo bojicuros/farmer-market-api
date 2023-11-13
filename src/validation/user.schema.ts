@@ -39,7 +39,15 @@ export const userIdSchema = object({
   }),
 });
 
+export const marketsIdSchema = object({
+  body: object({
+    id: string().uuid().required(),
+    marketNames: array().of(string()).min(1),
+  }),
+});
+
 export type UserCreateDto = InferType<typeof userCreateSchema>["body"];
 export type UserUpdateDto = InferType<typeof userUpdateSchema>["body"];
 export type UserIdDto = InferType<typeof userIdSchema>["query"];
 export type UserInfoUpdateDto = InferType<typeof userInfoUpdateSchema>["body"];
+export type MarketIdsDto = InferType<typeof marketsIdSchema>["body"];

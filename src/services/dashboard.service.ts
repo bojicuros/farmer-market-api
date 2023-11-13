@@ -42,8 +42,6 @@ export async function dashboardInfo() {
       },
     });
 
-    console.log(market.name, numberOfProductsInMarket, pricesToday);
-
     const percentage = Math.round(
       (pricesToday / numberOfProductsInMarket) * 100
     );

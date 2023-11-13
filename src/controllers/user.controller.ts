@@ -10,9 +10,11 @@ import {
   toggleActive,
   rejectById,
   updateUserInfo,
+  addMarketToUser,
 } from "../services/user.service";
 import { User } from "@prisma/client";
 import {
+  MarketIdsDto,
   UserIdDto,
   UserInfoUpdateDto,
   UserUpdateDto,
@@ -150,6 +152,19 @@ export async function toggleActiveStatus(req: Request, res: Response) {
   try {
     const updatedUser = await toggleActive(userId);
     res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Failed to toggle active status of user",
+    });
+  }
+}
+
+export async function addUserMarkets(req: Request, res: Response) {
+  const { id, marketNames } = req.body as MarketIdsDto;
+  try {
+    const addedMarkets = await addMarketToUser(id, marketNames);
+    res.status(200).json(addedMarkets);
   } catch (error) {
     res.status(500).json({
       error: "Internal Server Error",

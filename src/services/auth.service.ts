@@ -20,7 +20,25 @@ export async function getUser(userEmail: string) {
 export async function createUser(user: RegisterInfoDto) {
   const hashedPassword = await bcrypt.hash(user.password, 10);
 
-  return prisma.user.create({
+  const rolesToCreate = [];
+
+  if (user.is_admin) {
+    rolesToCreate.push({
+      role: {
+        connect: { name: "Admin" },
+      },
+    });
+  }
+
+  if (user.is_vendor) {
+    rolesToCreate.push({
+      role: {
+        connect: { name: "Vendor" },
+      },
+    });
+  }
+
+  const createdUser = await prisma.user.create({
     data: {
       email: user.email,
       first_name: user.first_name,
@@ -28,16 +46,12 @@ export async function createUser(user: RegisterInfoDto) {
       password: hashedPassword,
       phone_number: user.phone_number,
       UserRole: {
-        create: [
-          {
-            role: {
-              connect: { name: "Vendor" },
-            },
-          },
-        ],
+        create: rolesToCreate,
       },
     },
   });
+
+  return createdUser;
 }
 
 export async function getUserByRefreshToken(refreshToken: string) {

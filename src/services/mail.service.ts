@@ -14,8 +14,12 @@ const createTransporter = async () => {
 };
 
 export const sendEmail = async (emailOptions: Options) => {
-  const emailTransporter = await createTransporter();
-  await emailTransporter.sendMail(emailOptions);
+  try {
+    const emailTransporter = await createTransporter();
+    await emailTransporter.sendMail(emailOptions);
+  } catch (error) {
+    console.error("Error sending email");
+  }
 };
 
 export function sendRejectionEmail(email: string, name: string) {

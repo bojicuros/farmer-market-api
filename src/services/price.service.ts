@@ -1,4 +1,4 @@
-import { isSameDay } from "date-fns";
+import { format, isSameDay } from "date-fns";
 import { prisma } from "../../src/utils/db.server";
 
 export async function getPricesForToday(marketId: string) {
@@ -189,4 +189,42 @@ export async function deletePrice(price_id: string) {
   return await prisma.productPriceHistory.delete({
     where: { id: price_id },
   });
+}
+
+export async function getPricesPerMonth(
+  marketId: string,
+  userId: string,
+  productId: string
+) {
+  const thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+  const priceHistory = await prisma.productPriceHistory.findMany({
+    where: {
+      user_id: userId,
+      market_id: marketId,
+      product_id: productId,
+      price_date: {
+        gte: thirtyDaysAgo,
+      },
+    },
+    orderBy: {
+      price_date: "asc",
+    },
+    select: {
+      price_date: true,
+      price_value: true,
+    },
+  });
+
+  const formattedPriceHistory = priceHistory.map((entry) => {
+    const formattedDate = format(new Date(entry.price_date), "dd-MM");
+    const roundedPrice = parseFloat(entry.price_value.toFixed(2));
+    return {
+      price_date: formattedDate,
+      price_value: roundedPrice,
+    };
+  });
+
+  return formattedPriceHistory;
 }

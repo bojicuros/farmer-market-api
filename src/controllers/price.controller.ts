@@ -4,6 +4,7 @@ import {
   deletePrice,
   getPricesForCertainDay,
   getPricesForToday,
+  getPricesPerMonth,
   getUserMarketProductsWithoutPriceToday,
   getUserPricesForToday,
   updatePriceOfProduct,
@@ -11,6 +12,7 @@ import {
 import {
   AddProductPriceDto,
   MarketIdDto,
+  MonthlyPricesDto,
   PriceIdDto,
   PricePerDayDto,
   UpdateProductPriceDto,
@@ -155,6 +157,26 @@ export async function deleteProductPrice(req: Request, res: Response) {
     res.status(500).json({
       error: "Internal Server Error",
       message: "Error while deleting the price.",
+    });
+  }
+}
+
+export async function getMonthlyPrices(req: Request, res: Response) {
+  const { market_id, user_id, product_id } = req.query as MonthlyPricesDto;
+  try {
+    const prices = await getPricesPerMonth(market_id, user_id, product_id);
+    if (prices) {
+      res.status(200).json(prices);
+    } else {
+      res.status(400).json({
+        error: "Bad Request",
+        message: "No prices.",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "An error occurred while processing your request.",
     });
   }
 }

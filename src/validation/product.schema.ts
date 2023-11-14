@@ -43,6 +43,14 @@ export const userProductDeleteSchema = object({
   }),
 });
 
+export const vendorsSellingProductSchema = object({
+  query: object({
+    user_id: string().required().uuid(),
+    market_id: string().required().uuid(),
+    product_id: string().required().uuid(),
+  }),
+});
+
 export type ProductIdDto = InferType<typeof productIdSchema>["query"];
 export type AddProductDto = InferType<typeof addProductSchema>["body"];
 export type UpdateProductDto = InferType<typeof updateProductSchema>["body"];
@@ -50,4 +58,7 @@ export type UserIdDto = InferType<typeof userIdSchema>["query"];
 export type UserProductAddDto = InferType<typeof userProductAddSchema>["body"];
 export type UserProductDeleteDto = InferType<
   typeof userProductDeleteSchema
+>["query"];
+export type VendorsSellingProductDto = InferType<
+  typeof vendorsSellingProductSchema
 >["query"];

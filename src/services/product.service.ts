@@ -42,6 +42,37 @@ export async function getUserProducts(userId: string) {
   return productList;
 }
 
+export async function getVendorsWhoSellsProduct(
+  productId: string,
+  userId: string,
+  marketId: string
+) {
+  const vendors = await prisma.user.findMany({
+    select: {
+      id: true,
+      first_name: true,
+      last_name: true,
+    },
+    where: {
+      id: {
+        not: userId,
+      },
+      UserMarket: {
+        some: {
+          market_id: marketId,
+          UserMarketProduct: {
+            some: {
+              product_id: productId,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return vendors;
+}
+
 export async function getProductsNotSoldByUser(userId: string) {
   const userMarkets = await prisma.userMarket.findMany({
     where: { user_id: userId },

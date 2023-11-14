@@ -2,6 +2,7 @@ import express from "express";
 import {
   addProductPrice,
   deleteProductPrice,
+  getMonthlyPrices,
   getPriceForDate,
   getTodaysPrices,
   getTodaysUsersPrices,
@@ -11,6 +12,7 @@ import {
 import {
   addProductPriceSchema,
   marketIdSchema,
+  monthlyPricesSchema,
   priceIdSchema,
   pricePerDaySchema,
   updateProductPriceSchema,
@@ -31,6 +33,11 @@ router.get(
   "/get-products-without-todays-prices",
   validate(userIdSchema),
   getUsersProductWithoutTodaysPrice
+);
+router.get(
+  "/get-monthly-prices",
+  validate(monthlyPricesSchema),
+  getMonthlyPrices
 );
 router.post(
   "/add-product-price",

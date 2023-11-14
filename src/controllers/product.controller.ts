@@ -7,6 +7,7 @@ import {
   getProducts,
   getProductsNotSoldByUser,
   getUserProducts,
+  getVendorsWhoSellsProduct,
   updateProductById,
 } from "../services/product.service";
 import {
@@ -16,6 +17,7 @@ import {
   UserIdDto,
   UserProductAddDto,
   UserProductDeleteDto,
+  VendorsSellingProductDto,
 } from "../validation/product.schema";
 
 export async function getAllProducts(_: Request, res: Response) {
@@ -90,6 +92,24 @@ export async function getUsersProducts(req: Request, res: Response) {
   try {
     const products = await getUserProducts(userId);
     res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error fetching products by market",
+    });
+  }
+}
+
+export async function getSellers(req: Request, res: Response) {
+  const { user_id, market_id, product_id } =
+    req.query as VendorsSellingProductDto;
+  try {
+    const sellers = await getVendorsWhoSellsProduct(
+      product_id,
+      user_id,
+      market_id
+    );
+    res.status(200).json(sellers);
   } catch (error) {
     res.status(500).json({
       error: "Internal Server Error",

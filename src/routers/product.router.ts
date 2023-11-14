@@ -7,6 +7,7 @@ import {
   updateProductSchema,
   userProductAddSchema,
   userProductDeleteSchema,
+  vendorsSellingProductSchema,
 } from "../validation/product.schema";
 import {
   addNewProduct,
@@ -15,6 +16,7 @@ import {
   deleteUserProducts,
   getAllProducts,
   getProductsNotAssociatedWithUser,
+  getSellers,
   getUsersProducts,
   updateProduct,
 } from "../controllers/product.controller";
@@ -26,6 +28,11 @@ router.post("/add-new-product", validate(addProductSchema), addNewProduct);
 router.put("/update-product", validate(updateProductSchema), updateProduct);
 router.delete("/delete-product", validate(productIdSchema), deleteProduct);
 router.get("/get-users-products", validate(userIdSchema), getUsersProducts);
+router.get(
+  "/users-who-sell-product",
+  validate(vendorsSellingProductSchema),
+  getSellers
+);
 router.get(
   "/get-products-not-associated-with-user",
   validate(userIdSchema),

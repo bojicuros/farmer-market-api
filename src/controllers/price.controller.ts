@@ -3,7 +3,6 @@ import {
   addPriceOfProduct,
   deletePrice,
   getPricesForCertainDay,
-  getPricesForToday,
   getPricesPerMonth,
   getUserMarketProductsWithoutPriceToday,
   getUserPricesForToday,
@@ -11,7 +10,6 @@ import {
 } from "../services/price.service";
 import {
   AddProductPriceDto,
-  MarketIdDto,
   MonthlyPricesDto,
   PriceIdDto,
   PricePerDayDto,
@@ -19,28 +17,8 @@ import {
   UserIdDto,
 } from "../validation/price.schema";
 
-export async function getTodaysPrices(req: Request, res: Response) {
-  const marketId = (req.query as MarketIdDto).market_id;
-  try {
-    const prices = await getPricesForToday(marketId);
-    if (prices) {
-      res.status(200).json(prices);
-    } else {
-      res.status(404).json({
-        error: "Not Found",
-        message: "No prices found for today",
-      });
-    }
-  } catch (error) {
-    res.status(500).json({
-      error: "Internal Server Error",
-      message: "Error while performing the search",
-    });
-  }
-}
-
 export async function getPriceForDate(req: Request, res: Response) {
-  const { date, market_id } = req.body as PricePerDayDto;
+  const { date, market_id } = req.query as PricePerDayDto;
   try {
     const prices = await getPricesForCertainDay(date, market_id);
     if (prices) {

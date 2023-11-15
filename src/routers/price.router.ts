@@ -4,14 +4,12 @@ import {
   deleteProductPrice,
   getMonthlyPrices,
   getPriceForDate,
-  getTodaysPrices,
   getTodaysUsersPrices,
   getUsersProductWithoutTodaysPrice,
   updateProductPrice,
 } from "../controllers/price.controller";
 import {
   addProductPriceSchema,
-  marketIdSchema,
   monthlyPricesSchema,
   priceIdSchema,
   pricePerDaySchema,
@@ -22,7 +20,6 @@ import { validate } from "../middleware/validation.middleware";
 
 const router = express.Router();
 
-router.get("/get-todays-prices", validate(marketIdSchema), getTodaysPrices);
 router.get("/get-prices-by-date", validate(pricePerDaySchema), getPriceForDate);
 router.get(
   "/get-todays-user-prices",

@@ -1,13 +1,7 @@
 import { InferType, date, number, object, string } from "yup";
 
-export const marketIdSchema = object({
-  query: object({
-    market_id: string().uuid().required(),
-  }),
-});
-
 export const pricePerDaySchema = object({
-  body: object({
+  query: object({
     date: date().required(),
     market_id: string().uuid().required(),
   }),
@@ -49,8 +43,7 @@ export const monthlyPricesSchema = object({
   }),
 });
 
-export type MarketIdDto = InferType<typeof marketIdSchema>["query"];
-export type PricePerDayDto = InferType<typeof pricePerDaySchema>["body"];
+export type PricePerDayDto = InferType<typeof pricePerDaySchema>["query"];
 export type AddProductPriceDto = InferType<
   typeof addProductPriceSchema
 >["body"];

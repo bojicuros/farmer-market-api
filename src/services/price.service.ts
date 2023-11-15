@@ -1,28 +1,49 @@
 import { format, isSameDay } from "date-fns";
 import { prisma } from "../../src/utils/db.server";
 
-export async function getPricesForToday(marketId: string) {
-  const pricesHistory = await prisma.productPriceHistory.findMany({
-    where: { market_id: marketId },
-  });
-
-  const today = new Date();
-  const todaysPrices = pricesHistory.filter((item) =>
-    isSameDay(new Date(item.price_date.toString()), today)
-  );
-
-  return todaysPrices;
-}
-
 export async function getPricesForCertainDay(date: Date, marketId: string) {
   const pricesHistory = await prisma.productPriceHistory.findMany({
     where: { market_id: marketId },
+    include: {
+      UserMarketProduct: {
+        include: {
+          product: {
+            select: {
+              name: true,
+              unit_of_measurement: true,
+            },
+          },
+          userMarket: {
+            include: {
+              user: {
+                select: {
+                  first_name: true,
+                  last_name: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   });
 
   const requestedDay = new Date(date.toString());
-  const pricesOnRequestedDay = pricesHistory.filter((item) =>
-    isSameDay(new Date(item.price_date.toString()), requestedDay)
-  );
+  const pricesOnRequestedDay = pricesHistory
+    .filter((item) =>
+      isSameDay(new Date(item.price_date.toString()), requestedDay)
+    )
+    .map((item) => ({
+      id: item.id,
+      price_date: item.price_date,
+      price_value: parseFloat(item.price_value.toFixed(2)),
+      vendors_name: `${item.UserMarketProduct.userMarket.user.first_name} ${item.UserMarketProduct.userMarket.user.last_name}`,
+      product: {
+        name: item.UserMarketProduct.product.name,
+        unit_of_measurement: item.UserMarketProduct.product.unit_of_measurement,
+      },
+    }))
+    .sort((a, b) => a.product.name.localeCompare(b.product.name));
 
   return pricesOnRequestedDay;
 }

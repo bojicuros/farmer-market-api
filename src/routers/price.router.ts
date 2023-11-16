@@ -6,6 +6,7 @@ import {
   getPriceForDate,
   getTodaysUsersPrices,
   getUsersProductWithoutTodaysPrice,
+  keepProductPrices,
   updateProductPrice,
 } from "../controllers/price.controller";
 import {
@@ -51,6 +52,7 @@ router.delete(
   validate(priceIdSchema),
   deleteProductPrice
 );
+router.post("/keep-prices", validate(userIdSchema), keepProductPrices);
 
 const priceRouter = router;
 export default priceRouter;

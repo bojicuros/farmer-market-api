@@ -6,6 +6,7 @@ import {
   getPricesPerMonth,
   getUserMarketProductsWithoutPriceToday,
   getUserPricesForToday,
+  keepAllPrices,
   updatePriceOfProduct,
 } from "../services/price.service";
 import {
@@ -155,6 +156,19 @@ export async function getMonthlyPrices(req: Request, res: Response) {
     res.status(500).json({
       error: "Internal Server Error",
       message: "An error occurred while processing your request.",
+    });
+  }
+}
+
+export async function keepProductPrices(req: Request, res: Response) {
+  const userId = (req.query as UserIdDto).user_id;
+  try {
+    await keepAllPrices(userId);
+    res.status(200).json({ message: "Successfully added prices" });
+  } catch (error) {
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "Error while performing the search",
     });
   }
 }

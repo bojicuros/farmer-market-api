@@ -249,3 +249,21 @@ export async function getPricesPerMonth(
 
   return formattedPriceHistory;
 }
+
+export async function keepAllPrices(userId: string) {
+  try {
+    const prices = await getUserMarketProductsWithoutPriceToday(userId);
+    const pricesToKeep = prices.filter((price) => price.latest_price !== null);
+
+    for (const price of pricesToKeep) {
+      await addPriceOfProduct(
+        price.market_id,
+        userId,
+        price.product_id,
+        price.latest_price
+      );
+    }
+  } catch (error) {
+    throw error;
+  }
+}

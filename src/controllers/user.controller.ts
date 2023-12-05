@@ -42,6 +42,7 @@ export async function getUserById(req: Request, res: Response) {
         email: user.email,
         first_name: user.first_name,
         last_name: user.last_name,
+        phone_number: user.phone_number,
         confirmed: user.confirmed,
         is_active: user.is_active,
         is_approved: user.UserRole.every((role) => role.is_approved === true),

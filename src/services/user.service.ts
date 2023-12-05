@@ -61,6 +61,7 @@ export async function getById(userId: string) {
       email: true,
       first_name: true,
       last_name: true,
+      phone_number: true,
       confirmed: true,
       is_active: true,
       UserRole: {

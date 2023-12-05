@@ -5,7 +5,15 @@ export async function dashboardInfo() {
 
   const numberOfProducts = await prisma.product.count();
 
-  const numberOfEmployees = await prisma.userMarket.count();
+  const numberOfEmployees = await prisma.user.count({
+    where: {
+      UserRole: {
+        every: {
+          is_approved: true,
+        },
+      },
+    },
+  });
 
   const startOfToday = new Date();
   startOfToday.setHours(0, 0, 0, 0);

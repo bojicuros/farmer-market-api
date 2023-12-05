@@ -5,7 +5,7 @@ import { getUser } from "../services/auth.service";
 
 export const validRoles = ["Admin", "Vendor"];
 
-export const isVendorApprovedUser = async (userId: string) => {
+export const userApproved = async (userId: string) => {
   const user = await getById(userId);
   const userInfo = await getUser(user.email);
   return userInfo.UserRole.every((role) => role.is_approved === true);
@@ -33,9 +33,9 @@ export const authorize = (roles: string[]) => {
       if (!hasRequiredRole)
         return res.status(403).json({ message: "Unauthorized" });
 
-      const isVendorApproved = await isVendorApprovedUser(decodedToken.userId);
+      const isUserApproved = await userApproved(decodedToken.userId);
 
-      if (!isVendorApproved)
+      if (!isUserApproved)
         return res.status(403).json({ message: "Vendor not approved yet" });
 
       return next();

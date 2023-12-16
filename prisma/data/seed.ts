@@ -34,9 +34,6 @@ async function seed() {
     await prisma.userMarketProduct.createMany({
       data: seedData.userMarketProduct,
     });
-    await prisma.productPriceHistory.createMany({
-      data: seedData.productPriceHistory,
-    });
 
     console.log("Seeding completed successfully!");
   } catch (error) {

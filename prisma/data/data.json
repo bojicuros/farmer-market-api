@@ -6,41 +6,76 @@
   "users": [
     {
       "id": "5a936029-4db9-409a-9794-4b42832a1be9",
-      "email": "user1@example.com",
-      "password": "password1",
-      "first_name": "John",
-      "last_name": "Doe",
-      "phone_number": "1234567890",
+      "email": "jovan@example.com",
+      "password": "jovan123",
+      "first_name": "Jovan",
+      "last_name": "Tomić",
+      "phone_number": "+38766754654",
       "confirmed": true,
       "is_active": true
     },
     {
       "id": "ff89d5af-53ad-446b-ae7c-eb965571cf39",
-      "email": "user2@example.com",
-      "password": "password2",
-      "first_name": "Jane",
-      "last_name": "Smith",
-      "phone_number": "9876543210",
+      "email": "milica@example.com",
+      "password": "milica123",
+      "first_name": "Milica",
+      "last_name": "Ristić",
+      "phone_number": "+38765103243",
       "confirmed": true,
       "is_active": true
     },
     {
       "id": "eebc6b68-fd3f-463e-a310-2b8ecc371345",
-      "email": "user3@example.com",
-      "password": "password3",
-      "first_name": "John",
-      "last_name": "Snow",
-      "phone_number": "1234567890",
+      "email": "nenad@example.com",
+      "password": "nenad123",
+      "first_name": "Nenad",
+      "last_name": "Ilić",
+      "phone_number": "+38763473329",
+      "confirmed": true,
+      "is_active": true
+    },
+    {
+      "id": "3ec4ae29-7c37-43c9-8bed-4b9fb856abc6",
+      "email": "marina@example.com",
+      "password": "marina123",
+      "first_name": "Marina",
+      "last_name": "Dukić",
+      "phone_number": "+38768884542",
+      "confirmed": true,
+      "is_active": true
+    },
+    {
+      "id": "38aeb018-48ae-4052-a537-7d4f87a5d04f",
+      "email": "zorica@example.com",
+      "password": "zorica123",
+      "first_name": "Zorica",
+      "last_name": "Bebić",
+      "phone_number": "+38765422083",
+      "confirmed": true,
+      "is_active": true
+    },
+    {
+      "id": "1881a4f3-b54f-4315-bfda-968aefbabd40",
+      "email": "teodora@example.com",
+      "password": "teodora123",
+      "first_name": "Teodora",
+      "last_name": "Milanovic",
+      "phone_number": "+38766742321",
+      "confirmed": true,
+      "is_active": true
+    },
+    {
+      "id": "be17a276-45bc-4760-b632-22b753555b9f",
+      "email": "jovana@example.com",
+      "password": "jovana123",
+      "first_name": "Jovana",
+      "last_name": "Mika",
+      "phone_number": "+38766742321",
       "confirmed": true,
       "is_active": true
     }
   ],
   "userRoles": [
-    {
-      "role_id": "664211ac-c22a-435f-a986-6594bf22d08c",
-      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9",
-      "is_approved": true
-    },
     {
       "role_id": "5fb10e5a-d14c-4579-afb5-904cf283a463",
       "user_id": "5a936029-4db9-409a-9794-4b42832a1be9",
@@ -52,29 +87,54 @@
       "is_approved": true
     },
     {
+      "role_id": "664211ac-c22a-435f-a986-6594bf22d08c",
+      "user_id": "eebc6b68-fd3f-463e-a310-2b8ecc371345",
+      "is_approved": true
+    },
+    {
       "role_id": "5fb10e5a-d14c-4579-afb5-904cf283a463",
       "user_id": "eebc6b68-fd3f-463e-a310-2b8ecc371345",
+      "is_approved": true
+    },
+    {
+      "role_id": "5fb10e5a-d14c-4579-afb5-904cf283a463",
+      "user_id": "3ec4ae29-7c37-43c9-8bed-4b9fb856abc6",
+      "is_approved": true
+    },
+    {
+      "role_id": "5fb10e5a-d14c-4579-afb5-904cf283a463",
+      "user_id": "38aeb018-48ae-4052-a537-7d4f87a5d04f",
+      "is_approved": true
+    },
+    {
+      "role_id": "5fb10e5a-d14c-4579-afb5-904cf283a463",
+      "user_id": "1881a4f3-b54f-4315-bfda-968aefbabd40",
+      "is_approved": false
+    },
+    {
+      "role_id": "664211ac-c22a-435f-a986-6594bf22d08c",
+      "user_id": "be17a276-45bc-4760-b632-22b753555b9f",
       "is_approved": false
     }
   ],
   "markets": [
     {
       "id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
-      "name": "Farmers Market",
+      "name": "Kalenić pijaca",
       "image_url": "https://mediaproxy.salon.com/width/1200/https://media.salon.com/2021/08/farmers-market-produce-0812211.jpg",
-      "address": "Some address"
+      "address": "Nikole Tesle 12, Banja Luka"
     },
     {
       "id": "0c93ffe5-cc20-4e97-bec4-fc99e20fb62b",
-      "name": "Organic Market",
+      "name": "Zorina pijaca",
       "image_url": "https://mediaproxy.salon.com/width/1200/https://media.salon.com/2021/08/farmers-market-produce-0812211.jpg",
-      "address": "Some other address"
+      "address": "Jovana Dučića 8, Banja Luka"
     },
     {
       "id": "9b8541f7-cbb2-490c-b831-4a1f14df7f0a",
-      "name": "Local Market",
+      "name": "Zdrava korpa",
       "image_url": "https://mediaproxy.salon.com/width/1200/https://media.salon.com/2021/08/farmers-market-produce-0812211.jpg",
-      "address": "Trial address"
+      "address": "Karađorđeva 14, Banja Luka"
     }
   ],
   "userMarket": [
@@ -83,80 +143,246 @@
       "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d"
     },
     {
+      "user_id": "38aeb018-48ae-4052-a537-7d4f87a5d04f",
+      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d"
+    },
+    {
       "user_id": "eebc6b68-fd3f-463e-a310-2b8ecc371345",
       "market_id": "0c93ffe5-cc20-4e97-bec4-fc99e20fb62b"
+    },
+    {
+      "user_id": "3ec4ae29-7c37-43c9-8bed-4b9fb856abc6",
+      "market_id": "0c93ffe5-cc20-4e97-bec4-fc99e20fb62b"
+    },
+    {
+      "user_id": "3ec4ae29-7c37-43c9-8bed-4b9fb856abc6",
+      "market_id": "9b8541f7-cbb2-490c-b831-4a1f14df7f0a"
+    },
+    {
+      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9",
+      "market_id": "9b8541f7-cbb2-490c-b831-4a1f14df7f0a"
     }
   ],
   "products": [
     {
       "id": "8077fdaf-028d-4379-b5ed-22bf500269a9",
-      "name": "Apples",
+      "name": "Ananas",
       "unit_of_measurement": "kilogram"
     },
     {
       "id": "8e866d8d-bf8a-456a-a08c-d2f571effbe6",
-      "name": "Tomatoes",
+      "name": "Banane",
       "unit_of_measurement": "kilogram"
     },
     {
       "id": "3f92d6e3-9aeb-4af4-975a-ec5d2ac7bcb1",
-      "name": "Bananas",
-      "unit_of_measurement": "piece"
+      "name": "Blitva",
+      "unit_of_measurement": "kilogram"
     },
     {
       "id": "9c6ad657-52ea-4a47-94e3-1cf96b4f7b6e",
-      "name": "Carrots",
+      "name": "Celer",
       "unit_of_measurement": "kilogram"
     },
     {
       "id": "30a8e3a8-c3c6-48ab-96c1-4b5708225562",
-      "name": "Lettuce",
-      "unit_of_measurement": "piece"
+      "name": "Cvekla",
+      "unit_of_measurement": "kilogram"
     },
     {
       "id": "d1b4f935-11e1-48ab-b35b-0166f3e3b6ec",
-      "name": "Oranges",
+      "name": "Dinja",
       "unit_of_measurement": "kilogram"
     },
     {
       "id": "7c893a1d-d4f3-45f5-89f1-1c37a9f35595",
-      "name": "Potatoes",
+      "name": "Dunja",
       "unit_of_measurement": "kilogram"
     },
     {
       "id": "6e7e1d06-1e4e-4a43-9e27-1e139c8ea750",
-      "name": "Strawberries",
-      "unit_of_measurement": "bag"
+      "name": "Đumbir",
+      "unit_of_measurement": "kilogram"
     },
     {
       "id": "fd9b3f88-992e-4aeb-9b07-2218f74ab76c",
-      "name": "Cucumbers",
-      "unit_of_measurement": "piece"
+      "name": "Feferoni",
+      "unit_of_measurement": "kilogram"
     },
     {
       "id": "1e3b3f3c-736b-4c0b-a0c8-9b3da87cf8f7",
-      "name": "Grapes",
+      "name": "Gljive",
       "unit_of_measurement": "kilogram"
     },
     {
       "id": "98a63c47-95a2-44e2-875b-2dbfba843e23",
-      "name": "Bell Peppers",
-      "unit_of_measurement": "piece"
+      "name": "Grejp",
+      "unit_of_measurement": "kilogram"
     },
     {
       "id": "22e727f3-79ac-42da-a2f4-8a81b85e9d5a",
-      "name": "Pineapples",
-      "unit_of_measurement": "piece"
+      "name": "Grožđe bijelo",
+      "unit_of_measurement": "kilogram"
     },
     {
       "id": "4d3c5e6b-1df3-4d1c-9f7e-2115b0637db7",
-      "name": "Mangoes",
-      "unit_of_measurement": "piece"
+      "name": "Grožđe crno",
+      "unit_of_measurement": "kilogram"
     },
     {
       "id": "c82eaeb5-35b1-429d-9b85-0e81b032b6b8",
-      "name": "Watermelons",
-      "unit_of_measurement": "piece"
+      "name": "Grah bijeli",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "00de3fcd-f47e-4b1f-af4d-08f498c07edb",
+      "name": "Grah šareni",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "68f4388d-9e08-4d72-b52a-d2e8c817cbad",
+      "name": "Jabuka ajdared",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "1acfe7d1-2407-4a0f-938f-c2b8de4d002d",
+      "name": "Jabuka greni",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "9f96b1f0-04a1-4c13-8ef5-4a078a759eac",
+      "name": "Jabuka žuta",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "2cf888e0-5e69-4f48-856f-11dd189d611c",
+      "name": "Karfiol",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "e8258e61-9c7d-4c68-9441-7da839f3481c",
+      "name": "Kelj",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "be8b7e0d-b926-4df5-b8b4-7cc9f191fe66",
+      "name": "Kivi",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "e6e8b0c9-13b5-43a4-89b1-79d058926f8d",
+      "name": "Krastavci",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "c01de9f9-7697-4e49-a3ef-1222b1b19846",
+      "name": "Krompir bijeli",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "3d7f3a6d-4a0a-468f-923b-3c0ad917c049",
+      "name": "Kruška",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "b9e1d1ae-7951-4674-8b7c-7d5464f34e03",
+      "name": "Kupus",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "f653688b-32cb-48fc-874f-245e238efbc4",
+      "name": "Klementina",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "c26f6e11-bfc7-45df-b8cd-4a9b184a3a3a",
+      "name": "Kesten",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "9b2c37b8-ebd8-416d-b01a-7a2585470ea5",
+      "name": "Limun",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "d2cb7e7e-9d4e-4014-b4c9-59ab094e83f5",
+      "name": "Luk bijeli",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "bb52bc7d-488d-41b5-b9f0-4cf844e15db5",
+      "name": "Luk crveni",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "207d4eae-1a06-4c7a-84cf-7cb2f6d2c57d",
+      "name": "Mandarine",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "7b3c5f36-e768-4775-bb11-9bf4d4088c16",
+      "name": "Mrkva",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "aad2d2e3-3ea1-416b-b7bb-7be811396f8f",
+      "name": "Narandža grčka",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "84497f8d-3e80-4e7d-9ec1-8a816a48a88b",
+      "name": "Narandža španska",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "61eef44c-d2d8-4a92-8b22-43984733d1d5",
+      "name": "Nar",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "b2c22f0f-14e1-4215-b106-ebd6282aaf7a",
+      "name": "Peršun",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "f632f1c2-2fc7-4e8c-9aa4-4f46eacee50e",
+      "name": "Paprika crvena",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "1c67b893-3f7f-40a3-a283-e99075accc35",
+      "name": "Paprika roga",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "92d0d50d-17d7-4c01-b9d2-89db47657c52",
+      "name": "Paprika žuta",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "7e059ec1-c826-4b1f-8cc3-5e6bc89c61c9",
+      "name": "Paradajz",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "84a5d652-4a72-4ad9-b74d-482c16a1bc50",
+      "name": "Prasa",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "2e5543a9-688c-4a0a-93f3-746db39d95df",
+      "name": "Salata",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "7d12520a-0d98-4aa9-b03e-1ea8f2b163db",
+      "name": "Špinat",
+      "unit_of_measurement": "kilogram"
+    },
+    {
+      "id": "c0a508d6-6cb5-4baa-85d2-5c15766df417",
+      "name": "Tikvice",
+      "unit_of_measurement": "kilogram"
     }
   ],
   "userMarketProduct": [
@@ -228,106 +454,6 @@
     {
       "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
       "product_id": "c82eaeb5-35b1-429d-9b85-0e81b032b6b8",
-      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
-    }
-  ],
-  "productPriceHistory": [
-    {
-      "price_date": "2023-08-05T08:00:00.000Z",
-      "price_value": 2.5,
-      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
-      "product_id": "8077fdaf-028d-4379-b5ed-22bf500269a9",
-      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
-    },
-    {
-      "price_date": "2023-08-05T08:00:00.000Z",
-      "price_value": 3.0,
-      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
-      "product_id": "8e866d8d-bf8a-456a-a08c-d2f571effbe6",
-      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
-    },
-    {
-      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
-      "product_id": "3f92d6e3-9aeb-4af4-975a-ec5d2ac7bcb1",
-      "price_date": "2023-08-05T08:00:00.000Z",
-      "price_value": 1.0,
-      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
-    },
-    {
-      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
-      "product_id": "9c6ad657-52ea-4a47-94e3-1cf96b4f7b6e",
-      "price_date": "2023-08-05T08:00:00.000Z",
-      "price_value": 1.5,
-      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
-    },
-    {
-      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
-      "product_id": "30a8e3a8-c3c6-48ab-96c1-4b5708225562",
-      "price_date": "2023-08-05T08:00:00.000Z",
-      "price_value": 0.8,
-      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
-    },
-    {
-      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
-      "product_id": "d1b4f935-11e1-48ab-b35b-0166f3e3b6ec",
-      "price_date": "2023-08-05T08:00:00.000Z",
-      "price_value": 2.2,
-      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
-    },
-    {
-      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
-      "product_id": "7c893a1d-d4f3-45f5-89f1-1c37a9f35595",
-      "price_date": "2023-08-05T08:00:00.000Z",
-      "price_value": 1.2,
-      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
-    },
-    {
-      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
-      "product_id": "6e7e1d06-1e4e-4a43-9e27-1e139c8ea750",
-      "price_date": "2023-08-05T08:00:00.000Z",
-      "price_value": 2.8,
-      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
-    },
-    {
-      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
-      "product_id": "fd9b3f88-992e-4aeb-9b07-2218f74ab76c",
-      "price_date": "2023-08-05T08:00:00.000Z",
-      "price_value": 0.6,
-      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
-    },
-    {
-      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
-      "product_id": "1e3b3f3c-736b-4c0b-a0c8-9b3da87cf8f7",
-      "price_date": "2023-08-05T08:00:00.000Z",
-      "price_value": 4.5,
-      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
-    },
-    {
-      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
-      "product_id": "98a63c47-95a2-44e2-875b-2dbfba843e23",
-      "price_date": "2023-08-05T08:00:00.000Z",
-      "price_value": 1.8,
-      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
-    },
-    {
-      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
-      "product_id": "22e727f3-79ac-42da-a2f4-8a81b85e9d5a",
-      "price_date": "2023-08-05T08:00:00.000Z",
-      "price_value": 5.0,
-      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
-    },
-    {
-      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
-      "product_id": "4d3c5e6b-1df3-4d1c-9f7e-2115b0637db7",
-      "price_date": "2023-08-05T08:00:00.000Z",
-      "price_value": 3.5,
-      "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
-    },
-    {
-      "market_id": "8606fa9b-8c02-4638-ba17-dcff5fcd531d",
-      "product_id": "c82eaeb5-35b1-429d-9b85-0e81b032b6b8",
-      "price_date": "2023-08-05T08:00:00.000Z",
-      "price_value": 8.0,
       "user_id": "5a936029-4db9-409a-9794-4b42832a1be9"
     }
   ]

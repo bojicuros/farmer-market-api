@@ -55,10 +55,10 @@
 ## Users
 
 - **GET /users/get-all-approved:** Get all approved users 
-- **GET /users/get-by-id:** Get user information by ID (authorize with UserRole.Admin or UserRole.Vendor)
+- **GET /users/get-by-id:** Get user information by ID 
 - **GET /users/get-all-unapproved:** Get all unapproved users 
 - **POST /users/create:** Create a new user 
-- **PUT /users/update:** Update user information (authorize with UserRole.Admin or UserRole.Vendor)
+- **PUT /users/update:** Update user information 
 - **POST /users/update-user-info:** Update user information for admin purposes 
 - **POST /users/add-markets-to-user:** Associate markets with a user 
 - **DELETE /users/delete:** Delete a user 
